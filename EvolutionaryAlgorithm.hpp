@@ -13,15 +13,15 @@
 namespace ea {
     class EvolutionaryAlgorithm {
     protected:
-        const unsigned int firstGroupValue_;
-        const unsigned int secondGroupValue_;
+        const CardsValueVector cardsValueVector_;
+        Population population_;
         std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgoritm_;
         std::unique_ptr<AbstractMutation> mutation_;
         std::unique_ptr<AbstractScoringFunction> scoringFunction_;
         std::unique_ptr<AbstractSelectionAlgorithm> selectionAlgorithm_;
 
     public:
-        EvolutionaryAlgorithm(unsigned int firstGroupValue, unsigned int secondGroupValue,
+        EvolutionaryAlgorithm(const Population& population,
                 std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgoritm,
                 std::unique_ptr<AbstractMutation> mutation,
                 std::unique_ptr<AbstractScoringFunction> scoringFunction,

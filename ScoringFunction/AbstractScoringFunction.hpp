@@ -6,8 +6,13 @@
 
 namespace ea {
     class AbstractScoringFunction {
+    protected:
+        unsigned int firstGroupExpected_;
+        unsigned int secondGroupExpected_;
+
     public:
-        virtual int scoreCardsVector(const CardsVector& cardsVector) const = 0;
+        AbstractScoringFunction(unsigned int firstGroupExpected, unsigned int secondGroupExpected);
+        virtual int scoreCardsVector(const CardsValueVector& cardsValueVector, const CardsOwnersVector& cardsOwnersVector) const = 0;
     };
 }
 

@@ -7,7 +7,7 @@
 namespace ea {
     class AbstractMutation {
     public:
-        virtual void mutateCardsVector(CardsVector& cardsVector) = 0;
+        virtual void mutateCardsVector(Population& population) = 0;
     };
 }
 

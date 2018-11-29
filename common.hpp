@@ -6,8 +6,8 @@
 #include<vector>
 
 namespace ea{
-    using Card = std::pair<bool , unsigned int>;
-    using CardsVector = std::vector<Card>;
+    using CardsValueVector = std::vector<unsigned int>;
+    using CardsOwnersVector = std::vector<bool>;
+    using Population = std::vector<CardsOwnersVector>;
 }
-
 #endif //COMMON_HPP
