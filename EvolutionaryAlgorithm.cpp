@@ -1,13 +1,13 @@
 #include "EvolutionaryAlgorithm.hpp"
 
 namespace ea{
-    EvolutionaryAlgorithm::EvolutionaryAlgorithm(unsigned int firstGroupValue, unsigned int secondGroupValue,
-                                                 std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgoritm,
+    EvolutionaryAlgorithm::EvolutionaryAlgorithm(const Population& population,
+                                                 std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgorithm,
                                                  std::unique_ptr<AbstractMutation> mutation,
                                                  std::unique_ptr<AbstractScoringFunction> scoringFunction,
                                                  std::unique_ptr<AbstractSelectionAlgorithm> selectionAlgorithm)
-        :firstGroupValue_(firstGroupValue), secondGroupValue_(secondGroupValue), crossoverAlgoritm_(std::move(crossoverAlgoritm)),
-        mutation_(std::move(mutation)), scoringFunction_(std::move(scoringFunction)), selectionAlgorithm_(std::move(selectionAlgorithm))
+        :population_(population), crossoverAlgorithm_(std::move(crossoverAlgorithm)), mutation_(std::move(mutation)),
+         scoringFunction_(std::move(scoringFunction)), selectionAlgorithm_(std::move(selectionAlgorithm))
     {}
 
 }
