@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
 project(EvolutionaryAlgorithm)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -9,4 +9,4 @@ add_executable(EvolutionaryAlgorithm main.cpp common.hpp
         SelectionAlgorithm/AbstractSelectionAlgorithm.cpp SelectionAlgorithm/AbstractSelectionAlgorithm.hpp
         CrossoverAlgorithm/AbstractCrossoverAlgorithm.cpp CrossoverAlgorithm/AbstractCrossoverAlgorithm.hpp
         Mutation/AbstractMutation.cpp Mutation/AbstractMutation.hpp
-        CSVFileWriter.cpp CSVFileWriter.hpp)
+        CSVFileWriter.cpp CSVFileWriter.hpp common.cpp)
