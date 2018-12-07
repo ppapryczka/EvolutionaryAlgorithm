@@ -15,7 +15,7 @@ namespace ea {
     protected:
         const CardsValueVector cardsValueVector_;
         Population population_;
-        std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgoritm_;
+        std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgorithm_;
         std::unique_ptr<AbstractMutation> mutation_;
         std::unique_ptr<AbstractScoringFunction> scoringFunction_;
         std::unique_ptr<AbstractSelectionAlgorithm> selectionAlgorithm_;
