@@ -26,7 +26,7 @@ void ea::RouletteSelection::selectCandidates(const ea::Population& oldPopul, ea:
             random -= scores[currIdx];
             ++currIdx;
         } while (random > 0);
-        newPopul.emplace_back(oldPopul[currIdx]);
+        newPopul[i] = oldPopul[currIdx - 1];
     }
     scores.clear();
 }

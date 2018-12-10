@@ -1,15 +1,20 @@
 #include "CrossoverAlgorithm.hpp"
 
 void ea::CrossoverAlgorithm::crossoverCardsVector(ea::Population &selected, ea::Population &newPopul) const {
-    auto&& individual = selected.begin();
+    auto individual = selected.begin();
+    Population::iterator next;
 
-    for (int i = 0; i < newPopul.size(); ++i) {
+    for (int idx = 0; idx < newPopul.size(); ++idx) {
         // It there space for only one individual, it can't come form crossover.
-        if (randFloat() > probability_ || i == (newPopul.size() - 1)) {
+        if (randFloat() > probability_ || idx == (newPopul.size() - 1)) {
             // Don't crossover this individual.
-            newPopul[i] = *individual;
+            newPopul[idx] = *individual;
         } else {
-            doCrossover(*individual, *(++individual), newPopul[i], newPopul[++i]);
+            next = individual;
+            next++;
+            doCrossover(*individual, *(next), newPopul[idx], newPopul[idx + 1]);
+            ++individual;
+            ++idx;
         }
         ++individual;
     }

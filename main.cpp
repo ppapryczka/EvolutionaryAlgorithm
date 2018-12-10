@@ -142,4 +142,5 @@ int main(int argc, char** argv) {
     srand(seed);
     ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                         *mutation, *selection);
+    algorithm.run(10);
 }
