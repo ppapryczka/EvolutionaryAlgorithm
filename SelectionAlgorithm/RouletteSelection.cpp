@@ -5,7 +5,7 @@ ea::RouletteSelection::RouletteSelection(double a):
         a(a)
 {}
 
-void ea::RouletteSelection::selectCandidates(const ea::Population &oldPopul, ea::Population &newPopul) const {
+void ea::RouletteSelection::selectCandidates(const ea::Population& oldPopul, ea::Population& newPopul) const {
     /*
      * This method can be implemented as a tree to reduce computational complexity,
      * but this implementation is good enough.

@@ -131,6 +131,6 @@ int main(int argc, char** argv) {
 
     srand(seed);
     initPopulation(cardsNum,populationSize, cardValues, population);
-    ea::EvolutionaryAlgorithm algorithm(std::move(population), std::move(crossover),
-                                        std::move(mutation), std::move(selection));
+    ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
+                                        *mutation, *selection);
 }

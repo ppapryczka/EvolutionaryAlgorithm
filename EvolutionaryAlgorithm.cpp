@@ -1,30 +1,32 @@
 #include "EvolutionaryAlgorithm.hpp"
 
 namespace ea{
-    EvolutionaryAlgorithm::EvolutionaryAlgorithm(std::unique_ptr<Population> population,
-                                                 std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgorithm,
-                                                 std::unique_ptr<AbstractMutation> mutation,
-                                                 std::unique_ptr<SelectionAlgorithm> selectionAlgorithm)
-         :population_(std::move(population)),
-         crossoverAlgorithm_(std::move(crossoverAlgorithm)),
-         mutation_(std::move(mutation)),
-         selectionAlgorithm_(std::move(selectionAlgorithm))
+    EvolutionaryAlgorithm::EvolutionaryAlgorithm(Population& population,
+                                                 CardsValueVector& cardsValues,
+                                                 AbstractCrossoverAlgorithm& crossoverAlgorithm,
+                                                 AbstractMutation& mutation,
+                                                 SelectionAlgorithm& selectionAlgorithm)
+         :population_(population),
+          cardsVaules_(cardsValues),
+          crossoverAlgorithm_(crossoverAlgorithm),
+          mutation_(mutation),
+          selectionAlgorithm_(selectionAlgorithm)
     {}
     void EvolutionaryAlgorithm::run(unsigned iterNum) {
         Population selected;
 
-        selected.resize(2 * population_->size());
+        selected.resize(2 * population_.size());
         for (auto&& individual: selected) {
-            individual.reserve((*population_)[0].size()); // Every individual has the same size.
+            individual.reserve(population_[0].size()); // Every individual has the same size.
         }
         for (int i = 0; i < iterNum; ++i) {
-            selectionAlgorithm_->selectCandidates(*population_, selected);
-            crossoverAlgorithm_->crossoverCardsVector(selected, *population_);
+            selectionAlgorithm_.selectCandidates(population_, selected);
+            crossoverAlgorithm_.crossoverCardsVector(selected, population_);
             for (auto &&individual: selected) {
                 // Clear selected, but keep its memory allocated.
                 individual.clear();
             }
-            mutation_->mutateCardsVector(*population_);
+            mutation_.mutateCardsVector(population_);
             // TODO: log values into csv file
         }
     }

@@ -13,16 +13,18 @@
 namespace ea {
     class EvolutionaryAlgorithm {
     protected:
-        std::unique_ptr<Population> population_;
-        std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgorithm_;
-        std::unique_ptr<AbstractMutation> mutation_;
-        std::unique_ptr<SelectionAlgorithm> selectionAlgorithm_;
+        Population& population_;
+        CardsValueVector& cardsVaules_;
+        AbstractCrossoverAlgorithm& crossoverAlgorithm_;
+        AbstractMutation& mutation_;
+        SelectionAlgorithm& selectionAlgorithm_;
 
     public:
-        EvolutionaryAlgorithm(std::unique_ptr<Population> population,
-                              std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgorithm,
-                              std::unique_ptr<AbstractMutation> mutation,
-                              std::unique_ptr<SelectionAlgorithm> selectionAlgorithm);
+        EvolutionaryAlgorithm(Population &population,
+                              CardsValueVector &cardsValues,
+                              AbstractCrossoverAlgorithm &crossoverAlgorithm,
+                              AbstractMutation &mutation,
+                              SelectionAlgorithm &selectionAlgorithm);
         void run(unsigned iterNum);
 
     };
