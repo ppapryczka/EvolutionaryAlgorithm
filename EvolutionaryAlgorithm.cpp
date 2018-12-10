@@ -3,7 +3,7 @@
 namespace ea{
     EvolutionaryAlgorithm::EvolutionaryAlgorithm(Population& population,
                                                  CardsValueVector& cardsValues,
-                                                 AbstractCrossoverAlgorithm& crossoverAlgorithm,
+                                                 CrossoverAlgorithm& crossoverAlgorithm,
                                                  AbstractMutation& mutation,
                                                  SelectionAlgorithm& selectionAlgorithm)
          :population_(population),
@@ -21,8 +21,12 @@ namespace ea{
         }
         for (int i = 0; i < iterNum; ++i) {
             selectionAlgorithm_.selectCandidates(population_, selected);
+            for (auto&& individual: population_) {
+                // Make space for new population.
+                individual.clear();
+            }
             crossoverAlgorithm_.crossoverCardsVector(selected, population_);
-            for (auto &&individual: selected) {
+            for (auto&& individual: selected) {
                 // Clear selected, but keep its memory allocated.
                 individual.clear();
             }

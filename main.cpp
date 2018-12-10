@@ -6,6 +6,7 @@
 #include "EvolutionaryAlgorithm.hpp"
 #include "CSVFileWriter.hpp"
 #include "SelectionAlgorithm/RouletteSelection.h"
+#include "CrossoverAlgorithm/UniformCrossover.h"
 
 void csvDummyTest()
 {
@@ -18,12 +19,12 @@ void csvDummyTest()
 
 void printUsage(char *name) {
     std::cerr << "Usage: " << name << " -1 expected -2 expected {-r param | -t param | -h param}\n";
-    std::cerr << "\t-m param -v power {-u param | -k param} -s seed -c cards -a number -b probability\n";
+    std::cerr << "\t-m param -v power {-u | -k param} -s seed -c cards -a number -b probability\n";
     std::cerr << "-1, -2 - values expected on each stack\n";
     std::cerr << "-r, -t, -p - selection algorithm: r = roulette, t = tournament, -h threshold \n";
     std::cerr << "-m - mutation probability \n";
     std::cerr << "-v - target (value) function power\n";
-    std::cerr << "-u, -k - mutation algorithm: u = uniform distribution, k - k-point point \n";
+    std::cerr << "-u, -k - crossover algorithm: u = uniform distribution, k - k-point point \n";
     std::cerr << "-s - seed of randomness\n";
     std::cerr << "-c - cards number\n";
     std::cerr << "-a - population size\n";
@@ -57,7 +58,7 @@ int main(int argc, char** argv) {
     int opt, expected1, expected2, targetPower;
     unsigned seed, cardsNum, populationSize;
     double crossoverProbability = -1;
-    std::unique_ptr<ea::AbstractCrossoverAlgorithm> crossover = nullptr;
+    std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
     std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
     std::unique_ptr<ea::AbstractScoringFunction> scoringFunction = nullptr;
     std::unique_ptr<ea::SelectionAlgorithm> selection = nullptr;
@@ -67,7 +68,7 @@ int main(int argc, char** argv) {
     seed = (unsigned)time(nullptr);
     expected1 = expected2 = cardsNum = populationSize = 0;
 
-    while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:u:k:s:c:a:b:")) != -1) {
+    while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:")) != -1) {
         switch (opt) {
             case '1':
                 expected1 = atoi(optarg);
@@ -101,7 +102,7 @@ int main(int argc, char** argv) {
             case 'u':
                 if (crossover)
                     printUsage(argv[0]);
-                //crossover = TODO;
+                crossover = std::make_unique<ea::UniformCrossover>(ea::UniformCrossover());
                 break;
             case 'k':
                 if (crossover)
@@ -128,6 +129,10 @@ int main(int argc, char** argv) {
         printUsage(argv[0]);
     //scoringFunction = TODO
     selection->setScoring(std::move(scoringFunction));
+
+    if (crossoverProbability < 0 || crossoverProbability > 1)
+        printUsage(argv[0]);
+    crossover->setProbability(crossoverProbability);
 
     srand(seed);
     initPopulation(cardsNum,populationSize, cardValues, population);

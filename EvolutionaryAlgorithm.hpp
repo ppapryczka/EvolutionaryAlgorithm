@@ -5,7 +5,7 @@
 #include <memory>
 
 // ea
-#include "CrossoverAlgorithm/AbstractCrossoverAlgorithm.hpp"
+#include "CrossoverAlgorithm/CrossoverAlgorithm.hpp"
 #include "Mutation/AbstractMutation.hpp"
 #include "ScoringFunction/AbstractScoringFunction.hpp"
 #include "SelectionAlgorithm/AbstractSelectionAlgorithm.hpp"
@@ -15,14 +15,14 @@ namespace ea {
     protected:
         Population& population_;
         CardsValueVector& cardsVaules_;
-        AbstractCrossoverAlgorithm& crossoverAlgorithm_;
+        CrossoverAlgorithm& crossoverAlgorithm_;
         AbstractMutation& mutation_;
         SelectionAlgorithm& selectionAlgorithm_;
 
     public:
         EvolutionaryAlgorithm(Population &population,
                               CardsValueVector &cardsValues,
-                              AbstractCrossoverAlgorithm &crossoverAlgorithm,
+                              CrossoverAlgorithm &crossoverAlgorithm,
                               AbstractMutation &mutation,
                               SelectionAlgorithm &selectionAlgorithm);
         void run(unsigned iterNum);
