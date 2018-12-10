@@ -8,7 +8,7 @@ namespace ea {
             ScoringFunction(firstGroupExpected, secondGroupExpected, cardValues),
             power_(power)
     {
-        if (power_ >= 0)
+        if (power_ <= 0)
             throw std::runtime_error("Power of polynomial score have to be grater than 0");
     }
     int PolynomalScore::scoreCardsVector(const ea::CardsOwnersVector &cardsOwnersVector) const {

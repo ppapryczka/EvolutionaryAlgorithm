@@ -8,6 +8,7 @@
 #include "SelectionAlgorithm/RouletteSelection.h"
 #include "CrossoverAlgorithm/UniformCrossover.h"
 #include "ScoringFunction/PolynomalScore.h"
+#include "Mutation/Mutation.h"
 
 void csvDummyTest()
 {
@@ -95,7 +96,7 @@ int main(int argc, char** argv) {
             case 'm':
                 if (mutation)
                     printUsage(argv[0]);
-                //mutation = TODO;
+                mutation = std::make_unique<ea::Mutation>(ea::Mutation(atof(optarg)));
                 break;
             case 'v':
                 targetPower = atoi(optarg);
@@ -121,10 +122,12 @@ int main(int argc, char** argv) {
                 break;
             case 'b':
                 crossoverProbability = atof(optarg);
+                break;
             default:
                 printUsage(argv[0]);
         }
     }
+    initPopulation(cardsNum,populationSize, cardValues, population);
     // If any of parameters is not set, abort.
     if (!(selection && mutation && crossover && (targetPower > 0)))
         printUsage(argv[0]);
@@ -137,7 +140,6 @@ int main(int argc, char** argv) {
     crossover->setProbability(crossoverProbability);
 
     srand(seed);
-    initPopulation(cardsNum,populationSize, cardValues, population);
     ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                         *mutation, *selection);
 }
