@@ -7,7 +7,7 @@
 // ea
 #include "CrossoverAlgorithm/CrossoverAlgorithm.hpp"
 #include "Mutation/AbstractMutation.hpp"
-#include "ScoringFunction/AbstractScoringFunction.hpp"
+#include "ScoringFunction/ScoringFunction.hpp"
 #include "SelectionAlgorithm/AbstractSelectionAlgorithm.hpp"
 
 namespace ea {

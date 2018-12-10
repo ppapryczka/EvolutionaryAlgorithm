@@ -7,6 +7,7 @@
 #include "CSVFileWriter.hpp"
 #include "SelectionAlgorithm/RouletteSelection.h"
 #include "CrossoverAlgorithm/UniformCrossover.h"
+#include "ScoringFunction/PolynomalScore.h"
 
 void csvDummyTest()
 {
@@ -60,7 +61,7 @@ int main(int argc, char** argv) {
     double crossoverProbability = -1;
     std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
     std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
-    std::unique_ptr<ea::AbstractScoringFunction> scoringFunction = nullptr;
+    std::unique_ptr<ea::ScoringFunction> scoringFunction = nullptr;
     std::unique_ptr<ea::SelectionAlgorithm> selection = nullptr;
     std::unique_ptr<ea::Population> population = nullptr;
     std::unique_ptr<ea::CardsValueVector> cardValues = nullptr;
@@ -127,7 +128,8 @@ int main(int argc, char** argv) {
     // If any of parameters is not set, abort.
     if (!(selection && mutation && crossover && (targetPower > 0)))
         printUsage(argv[0]);
-    //scoringFunction = TODO
+    scoringFunction = std::make_unique<ea::PolynomalScore>(ea::PolynomalScore(targetPower, expected1,
+                                                                              expected2, *cardValues));
     selection->setScoring(std::move(scoringFunction));
 
     if (crossoverProbability < 0 || crossoverProbability > 1)

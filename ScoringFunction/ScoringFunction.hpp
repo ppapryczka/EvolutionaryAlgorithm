@@ -6,15 +6,15 @@
 #include "../common.hpp"
 
 namespace ea {
-    class AbstractScoringFunction {
+    class ScoringFunction {
     protected:
         unsigned int firstGroupExpected_;
         unsigned int secondGroupExpected_;
-        const std::unique_ptr<CardsValueVector> cardValues_;
+        const CardsValueVector& cardValues_;
 
     public:
-        AbstractScoringFunction(unsigned int firstGroupExpected, unsigned int secondGroupExpected,
-                                std::unique_ptr<CardsValueVector>&& cardValues);
+        ScoringFunction(unsigned int firstGroupExpected, unsigned int secondGroupExpected,
+                                CardsValueVector& cardValues);
         virtual int scoreCardsVector(const CardsOwnersVector& cardsOwnersVector) const = 0;
     };
 }
