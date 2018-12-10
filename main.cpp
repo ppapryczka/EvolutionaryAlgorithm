@@ -5,6 +5,7 @@
 //ea
 #include "EvolutionaryAlgorithm.hpp"
 #include "CSVFileWriter.hpp"
+#include "SelectionAlgorithm/RouletteSelection.h"
 
 void csvDummyTest()
 {
@@ -59,7 +60,7 @@ int main(int argc, char** argv) {
     std::unique_ptr<ea::AbstractCrossoverAlgorithm> crossover = nullptr;
     std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
     std::unique_ptr<ea::AbstractScoringFunction> scoringFunction = nullptr;
-    std::unique_ptr<ea::AbstractSelectionAlgorithm> selection = nullptr;
+    std::unique_ptr<ea::SelectionAlgorithm> selection = nullptr;
     std::unique_ptr<ea::Population> population = nullptr;
     std::unique_ptr<ea::CardsValueVector> cardValues = nullptr;
 
@@ -77,7 +78,7 @@ int main(int argc, char** argv) {
             case 'r':
                 if (selection)
                     printUsage(argv[0]);
-                //selection = TODO;
+                selection = std::make_unique<ea::RouletteSelection>(ea::RouletteSelection(atof(optarg)));
                 break;
             case 't':
                 if (selection)
@@ -126,9 +127,10 @@ int main(int argc, char** argv) {
     if (!(selection && mutation && crossover && (targetPower > 0)))
         printUsage(argv[0]);
     //scoringFunction = TODO
+    selection->setScoring(std::move(scoringFunction));
 
     srand(seed);
     initPopulation(cardsNum,populationSize, cardValues, population);
-    ea::EvolutionaryAlgorithm algorithm(std::move(cardValues), std::move(population), std::move(crossover),
-                                        std::move(mutation), std::move(scoringFunction), std::move(selection));
+    ea::EvolutionaryAlgorithm algorithm(std::move(population), std::move(crossover),
+                                        std::move(mutation), std::move(selection));
 }

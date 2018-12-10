@@ -9,4 +9,4 @@ add_executable(EvolutionaryAlgorithm main.cpp common.hpp
         SelectionAlgorithm/AbstractSelectionAlgorithm.cpp SelectionAlgorithm/AbstractSelectionAlgorithm.hpp
         CrossoverAlgorithm/AbstractCrossoverAlgorithm.cpp CrossoverAlgorithm/AbstractCrossoverAlgorithm.hpp
         Mutation/AbstractMutation.cpp Mutation/AbstractMutation.hpp
-        CSVFileWriter.cpp CSVFileWriter.hpp common.cpp)
+        CSVFileWriter.cpp CSVFileWriter.hpp common.cpp SelectionAlgorithm/RouletteSelection.cpp SelectionAlgorithm/RouletteSelection.h)
