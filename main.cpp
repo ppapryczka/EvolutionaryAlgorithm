@@ -21,7 +21,7 @@ void csvDummyTest()
 
 void printUsage(char *name) {
     std::cerr << "Usage: " << name << " -1 expected -2 expected {-r param | -t param | -h param}\n";
-    std::cerr << "\t-m param -v power {-u | -k param} -s seed -c cards -a number -b probability\n";
+    std::cerr << "\t-m param -v power {-u | -k param} -s seed -c cards -a number -b probability -i iterations\n";
     std::cerr << "-1, -2 - values expected on each stack\n";
     std::cerr << "-r, -t, -p - selection algorithm: r = roulette, t = tournament, -h threshold \n";
     std::cerr << "-m - mutation probability \n";
@@ -31,6 +31,7 @@ void printUsage(char *name) {
     std::cerr << "-c - cards number\n";
     std::cerr << "-a - population size\n";
     std::cerr << "-b - crossover probability\n";
+    std::cerr << "-i - iterations number\n";
     exit(EXIT_FAILURE);
 }
 
@@ -58,7 +59,7 @@ void initPopulation(unsigned cardsNum, unsigned populationSize, std::unique_ptr<
 
 int main(int argc, char** argv) {
     int opt, expected1, expected2, targetPower;
-    unsigned seed, cardsNum, populationSize;
+    unsigned seed, cardsNum, populationSize, iterations;
     double crossoverProbability = -1;
     std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
     std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
@@ -68,9 +69,9 @@ int main(int argc, char** argv) {
     std::unique_ptr<ea::CardsValueVector> cardValues = nullptr;
 
     seed = (unsigned)time(nullptr);
-    expected1 = expected2 = cardsNum = populationSize = 0;
+    expected1 = expected2 = cardsNum = populationSize = iterations = 0;
 
-    while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:")) != -1) {
+    while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:")) != -1) {
         switch (opt) {
             case '1':
                 expected1 = atoi(optarg);
@@ -123,6 +124,9 @@ int main(int argc, char** argv) {
             case 'b':
                 crossoverProbability = atof(optarg);
                 break;
+            case 'i':
+                iterations = atoi(optarg);
+                break;
             default:
                 printUsage(argv[0]);
         }
@@ -142,5 +146,5 @@ int main(int argc, char** argv) {
     srand(seed);
     ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                         *mutation, *selection);
-    algorithm.run(10);
+    algorithm.run(iterations);
 }
