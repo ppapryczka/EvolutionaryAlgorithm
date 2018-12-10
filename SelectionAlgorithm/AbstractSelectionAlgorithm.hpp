@@ -7,7 +7,7 @@
 namespace ea {
     class AbstractSelectionAlgorithm {
     public:
-        virtual Population selectCandidates(const Population& population) const = 0;
+        virtual void selectCandidates(const Population& oldPopul, Population &newPopul) const = 0;
     };
 }
 

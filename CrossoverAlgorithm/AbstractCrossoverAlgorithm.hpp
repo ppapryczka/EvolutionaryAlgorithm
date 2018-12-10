@@ -7,7 +7,7 @@
 namespace ea {
     class AbstractCrossoverAlgorithm {
     public:
-        virtual void crossoverCardsVector(Population& population) const = 0;
+        virtual void crossoverCardsVector(Population& selected, Population &newPopul) const = 0;
     };
 }
 
