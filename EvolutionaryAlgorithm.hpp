@@ -5,27 +5,27 @@
 #include <memory>
 
 // ea
-#include "CrossoverAlgorithm/AbstractCrossoverAlgorithm.hpp"
+#include "CrossoverAlgorithm/CrossoverAlgorithm.hpp"
 #include "Mutation/AbstractMutation.hpp"
-#include "ScoringFunction/AbstractScoringFunction.hpp"
+#include "ScoringFunction/ScoringFunction.hpp"
 #include "SelectionAlgorithm/AbstractSelectionAlgorithm.hpp"
 
 namespace ea {
     class EvolutionaryAlgorithm {
     protected:
-        const CardsValueVector cardsValueVector_;
-        Population population_;
-        std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgoritm_;
-        std::unique_ptr<AbstractMutation> mutation_;
-        std::unique_ptr<AbstractScoringFunction> scoringFunction_;
-        std::unique_ptr<AbstractSelectionAlgorithm> selectionAlgorithm_;
+        Population& population_;
+        CardsValueVector& cardsVaules_;
+        CrossoverAlgorithm& crossoverAlgorithm_;
+        AbstractMutation& mutation_;
+        SelectionAlgorithm& selectionAlgorithm_;
 
     public:
-        EvolutionaryAlgorithm(const Population& population,
-                std::unique_ptr<AbstractCrossoverAlgorithm> crossoverAlgoritm,
-                std::unique_ptr<AbstractMutation> mutation,
-                std::unique_ptr<AbstractScoringFunction> scoringFunction,
-                std::unique_ptr<AbstractSelectionAlgorithm> selectionAlgorithm);
+        EvolutionaryAlgorithm(Population &population,
+                              CardsValueVector &cardsValues,
+                              CrossoverAlgorithm &crossoverAlgorithm,
+                              AbstractMutation &mutation,
+                              SelectionAlgorithm &selectionAlgorithm);
+        void run(unsigned iterNum);
 
     };
 }

@@ -2,12 +2,17 @@
 #define ABSTRACTSELECTIONALGORITHM_HPP
 
 // ea
+#include <bits/unique_ptr.h>
 #include "../common.hpp"
+#include "../ScoringFunction/ScoringFunction.hpp"
 
 namespace ea {
-    class AbstractSelectionAlgorithm {
+    class SelectionAlgorithm {
+    protected:
+        std::unique_ptr<ScoringFunction> scoringFunction_;
     public:
-        virtual Population selectCandidates(const Population& population) const = 0;
+        virtual void selectCandidates(const Population& oldPopul, Population &newPopul) const = 0;
+        void setScoring(std::unique_ptr<ScoringFunction> &&scoringFunction);
     };
 }
 
