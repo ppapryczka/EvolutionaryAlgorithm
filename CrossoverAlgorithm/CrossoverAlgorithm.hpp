@@ -9,7 +9,7 @@ namespace ea {
     private:
         double probability_;
     protected:
-        virtual void doCrossover(const CardsOwnersVector& parrent1, const CardsOwnersVector& parrent2,
+        virtual void doCrossover(const CardsOwnersVector& parent1, const CardsOwnersVector& parent2,
                          CardsOwnersVector& child1, CardsOwnersVector& child2) const = 0;
     public:
         void setProbability(double probability);

@@ -9,6 +9,7 @@
 #include "CrossoverAlgorithm/UniformCrossover.h"
 #include "ScoringFunction/PolynomalScore.h"
 #include "Mutation/Mutation.h"
+#include "CrossoverAlgorithm/KpointCrossover.h"
 
 void csvDummyTest()
 {
@@ -110,7 +111,7 @@ int main(int argc, char** argv) {
             case 'k':
                 if (crossover)
                     printUsage(argv[0]);
-                //crossover = TODO;
+                crossover = std::make_unique<ea::KpointCrossover>(ea::KpointCrossover(atoi(optarg)));
                 break;
             case 's':
                 seed = atoi(optarg);

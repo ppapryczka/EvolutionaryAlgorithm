@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "CrossoverAlgorithm.hpp"
 
 void ea::CrossoverAlgorithm::crossoverCardsVector(ea::Population &selected, ea::Population &newPopul) const {
@@ -12,6 +13,8 @@ void ea::CrossoverAlgorithm::crossoverCardsVector(ea::Population &selected, ea::
         } else {
             next = individual;
             next++;
+            if (individual->size() != next->size())
+                throw std::runtime_error("Individuals must wave the same size.");
             doCrossover(*individual, *(next), newPopul[idx], newPopul[idx + 1]);
             ++individual;
             ++idx;
