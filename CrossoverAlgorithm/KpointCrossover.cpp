@@ -1,7 +1,3 @@
-//
-// Created by michal on 14.12.18.
-//
-
 #include <algorithm>
 #include <stdexcept>
 #include "KpointCrossover.h"

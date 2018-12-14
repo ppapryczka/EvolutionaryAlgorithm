@@ -10,6 +10,7 @@
 #include "ScoringFunction/PolynomalScore.h"
 #include "Mutation/Mutation.h"
 #include "CrossoverAlgorithm/KpointCrossover.h"
+#include "SelectionAlgorithm/ThresholdSelection.hpp"
 
 void csvDummyTest()
 {
@@ -93,7 +94,7 @@ int main(int argc, char** argv) {
             case 'h':
                 if (selection)
                     printUsage(argv[0]);
-                //selection = TODO;
+                selection = std::make_unique<ea::ThresholdSelection>(ea::ThresholdSelection(atoi(optarg)));
                 break;
             case 'm':
                 if (mutation)
