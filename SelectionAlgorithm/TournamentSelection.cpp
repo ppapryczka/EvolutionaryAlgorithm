@@ -5,7 +5,7 @@ namespace ea {
     TournamentSelection::TournamentSelection(unsigned tournamentSize):
         tournamentSize_(tournamentSize)
     {}
-    void TournamentSelection::selectCandidates(const ea::Population &oldPopul, ea::Population &newPopul) const {
+    void TournamentSelection::selectCandidates(const ea::Population &oldPopul, ea::Population &newPopul, const std::vector<int > &scoresVector) const {
         unsigned currIdx, bestIdx;
         int currScore, bestScore;
 
@@ -16,7 +16,7 @@ namespace ea {
             bestScore = INT_MIN;
             for (int i = 0; i < tournamentSize_; ++i) {
                 currIdx = (unsigned) (randFloat() * (oldPopul.size() - 1));
-                currScore = scoringFunction_->scoreCardsVector(oldPopul[currIdx]);
+                currScore = scoresVector[currIdx];
                 if (currScore > bestScore) {
                     bestIdx = currIdx;
                     bestScore = currScore;

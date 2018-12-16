@@ -2,13 +2,12 @@
 #include "ThresholdSelection.hpp"
 
 namespace ea {
-    using scorePair = std::pair<int, unsigned>;
+
 
     ThresholdSelection::ThresholdSelection(unsigned threshold):
             threshold_(threshold)
     {}
-    void ThresholdSelection::selectCandidates(const ea::Population &oldPopul, ea::Population &newPopul) const {
-        std::vector<scorePair> scores;
+    void ThresholdSelection::selectCandidates(const ea::Population &oldPopul, ea::Population &newPopul, const std::vector<int > &scoresVector) const {
         unsigned selectedIdx, selectedScoreIdx;
 
         if (2 * oldPopul.size() != newPopul.size())
@@ -16,7 +15,8 @@ namespace ea {
 
         scores.reserve(oldPopul.size());
         for (unsigned i = 0; i < oldPopul.size(); ++i) {
-            scores.emplace_back(scoringFunction_->scoreCardsVector(oldPopul[i]), i);
+            scores.emplace_back(std::make_pair(scoresVector[i], i));
+            //scores.emplace_back(scoringFunction_->scoreCardsVector(oldPopul[i]), i);
         }
         std::sort(scores.begin(), scores.end(), std::greater<>());// Sort in decreasing order.
         for (unsigned i = 0; i < newPopul.size(); ++i) {
@@ -24,5 +24,6 @@ namespace ea {
             selectedIdx = scores[scores.size() - selectedScoreIdx - 1].second;
             newPopul[i] = oldPopul[selectedIdx];
         }
+        scores.clear();
     }
 }

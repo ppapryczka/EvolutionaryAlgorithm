@@ -9,7 +9,7 @@ namespace ea {
         unsigned tournamentSize_;
     public:
         explicit TournamentSelection(unsigned tournamentSize);
-        void selectCandidates(const Population& oldPopul, Population &newPopul) const override;
+        void selectCandidates(const Population& oldPopul, Population &newPopul, const std::vector<int > &scoresVector) const override;
     };
 }
 

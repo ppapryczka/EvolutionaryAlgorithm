@@ -7,10 +7,12 @@
 namespace ea {
     class ThresholdSelection: public SelectionAlgorithm {
     private:
+        using scorePair = std::pair<int, unsigned>;
         unsigned threshold_;
+        mutable std::vector<scorePair> scores;
     public:
         explicit ThresholdSelection(unsigned threshold);
-        void selectCandidates(const Population& oldPopul, Population &newPopul) const override;
+        void selectCandidates(const Population& oldPopul, Population &newPopul, const std::vector<int > &scoresVector) const override;
     };
 }
 

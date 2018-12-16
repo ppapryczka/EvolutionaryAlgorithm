@@ -7,11 +7,11 @@ namespace ea {
     class RouletteSelection : public SelectionAlgorithm {
     private:
         double a;
+        mutable std::vector<double> scores;
 
-        mutable std::vector<double> scores; //This one exist only to avoid reallocating memory.
     public:
         explicit RouletteSelection(double a);
-        void selectCandidates(const Population& oldPopul, Population &newPopul) const override;
+        void selectCandidates(const Population& oldPopul, Population &newPopul, const std::vector<int > &scoresVector) const override;
     };
 }
 

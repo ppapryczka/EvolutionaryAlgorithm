@@ -13,8 +13,7 @@
 #include "SelectionAlgorithm/ThresholdSelection.hpp"
 #include "SelectionAlgorithm/TournamentSelection.hpp"
 
-void csvDummyTest()
-{
+void csvDummyTest(){
     ea::CSVFileWriter csvFileWriter("dummy.csv", ';');
     std::string bluesBrothers1 = "We are on a mission from God!";
     std::string bluesBrothers2 = "No ma'am. We're musicians.";
@@ -61,93 +60,102 @@ void initPopulation(unsigned cardsNum, unsigned populationSize, std::unique_ptr<
 }
 
 int main(int argc, char** argv) {
-    int opt, expected1, expected2, targetPower;
-    unsigned seed, cardsNum, populationSize, iterations;
-    double crossoverProbability = -1;
-    std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
-    std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
-    std::unique_ptr<ea::ScoringFunction> scoringFunction = nullptr;
-    std::unique_ptr<ea::SelectionAlgorithm> selection = nullptr;
-    std::unique_ptr<ea::Population> population = nullptr;
-    std::unique_ptr<ea::CardsValueVector> cardValues = nullptr;
+    try {
+        int opt, expected1, expected2, targetPower;
+        unsigned seed, cardsNum, populationSize, iterations;
+        double crossoverProbability = -1;
+        std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
+        std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
+        std::unique_ptr<ea::ScoringFunction> scoringFunction = nullptr;
+        std::unique_ptr<ea::SelectionAlgorithm> selection = nullptr;
+        std::unique_ptr<ea::Population> population = nullptr;
+        std::unique_ptr<ea::CardsValueVector> cardValues = nullptr;
 
-    seed = (unsigned)time(nullptr);
-    expected1 = expected2 = cardsNum = populationSize = iterations = 0;
+        seed = (unsigned) time(nullptr);
+        expected1 = expected2 = cardsNum = populationSize = iterations = 0;
 
-    while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:")) != -1) {
-        switch (opt) {
-            case '1':
-                expected1 = atoi(optarg);
-                break;
-            case '2':
-                expected2 = atoi(optarg);
-                break;
-            case 'r':
-                if (selection)
+        while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:")) != -1) {
+            switch (opt) {
+                case '1':
+                    expected1 = atoi(optarg);
+                    break;
+                case '2':
+                    expected2 = atoi(optarg);
+                    break;
+                case 'r':
+                    if (selection)
+                        printUsage(argv[0]);
+                    selection = std::make_unique<ea::RouletteSelection>(ea::RouletteSelection(atof(optarg)));
+                    break;
+                case 't':
+                    if (selection)
+                        printUsage(argv[0]);
+                    selection = std::make_unique<ea::TournamentSelection>(ea::TournamentSelection(atoi(optarg)));
+                    break;
+                case 'h':
+                    if (selection)
+                        printUsage(argv[0]);
+                    selection = std::make_unique<ea::ThresholdSelection>(ea::ThresholdSelection(atoi(optarg)));
+                    break;
+                case 'm':
+                    if (mutation)
+                        printUsage(argv[0]);
+                    mutation = std::make_unique<ea::Mutation>(ea::Mutation(atof(optarg)));
+                    break;
+                case 'v':
+                    targetPower = atoi(optarg);
+                    break;
+                case 'u':
+                    if (crossover)
+                        printUsage(argv[0]);
+                    crossover = std::make_unique<ea::UniformCrossover>(ea::UniformCrossover());
+                    break;
+                case 'k':
+                    if (crossover)
+                        printUsage(argv[0]);
+                    crossover = std::make_unique<ea::KpointCrossover>(ea::KpointCrossover(atoi(optarg)));
+                    break;
+                case 's':
+                    seed = atoi(optarg);
+                    break;
+                case 'c':
+                    cardsNum = atoi(optarg);
+                    break;
+                case 'a':
+                    populationSize = atoi(optarg);
+                    break;
+                case 'b':
+                    crossoverProbability = atof(optarg);
+                    break;
+                case 'i':
+                    iterations = atoi(optarg);
+                    break;
+                default:
                     printUsage(argv[0]);
-                selection = std::make_unique<ea::RouletteSelection>(ea::RouletteSelection(atof(optarg)));
-                break;
-            case 't':
-                if (selection)
-                    printUsage(argv[0]);
-                selection = std::make_unique<ea::TournamentSelection>(ea::TournamentSelection(atoi(optarg)));
-                break;
-            case 'h':
-                if (selection)
-                    printUsage(argv[0]);
-                selection = std::make_unique<ea::ThresholdSelection>(ea::ThresholdSelection(atoi(optarg)));
-                break;
-            case 'm':
-                if (mutation)
-                    printUsage(argv[0]);
-                mutation = std::make_unique<ea::Mutation>(ea::Mutation(atof(optarg)));
-                break;
-            case 'v':
-                targetPower = atoi(optarg);
-                break;
-            case 'u':
-                if (crossover)
-                    printUsage(argv[0]);
-                crossover = std::make_unique<ea::UniformCrossover>(ea::UniformCrossover());
-                break;
-            case 'k':
-                if (crossover)
-                    printUsage(argv[0]);
-                crossover = std::make_unique<ea::KpointCrossover>(ea::KpointCrossover(atoi(optarg)));
-                break;
-            case 's':
-                seed = atoi(optarg);
-                break;
-            case 'c':
-                cardsNum = atoi(optarg);
-                break;
-            case 'a':
-                populationSize = atoi(optarg);
-                break;
-            case 'b':
-                crossoverProbability = atof(optarg);
-                break;
-            case 'i':
-                iterations = atoi(optarg);
-                break;
-            default:
-                printUsage(argv[0]);
+            }
         }
+        initPopulation(cardsNum, populationSize, cardValues, population);
+        // If any of parameters is not set, abort.
+        if (!(selection && mutation && crossover && (targetPower > 0)))
+            printUsage(argv[0]);
+        scoringFunction = std::make_unique<ea::PolynomalScore>(ea::PolynomalScore(targetPower, expected1,
+                                                                                  expected2, *cardValues));
+
+        if (crossoverProbability < 0 || crossoverProbability > 1)
+            printUsage(argv[0]);
+        crossover->setProbability(crossoverProbability);
+
+        srand(seed);
+        ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
+                                            *mutation, *selection, *scoringFunction);
+
+        std::cout<<"tutaj "<<std::endl;
+
+        algorithm.run(iterations);
     }
-    initPopulation(cardsNum,populationSize, cardValues, population);
-    // If any of parameters is not set, abort.
-    if (!(selection && mutation && crossover && (targetPower > 0)))
-        printUsage(argv[0]);
-    scoringFunction = std::make_unique<ea::PolynomalScore>(ea::PolynomalScore(targetPower, expected1,
-                                                                              expected2, *cardValues));
-    selection->setScoring(std::move(scoringFunction));
+    catch (std::exception &ex){
+        std::cout<<ex.what()<<std::endl;
+    }
 
-    if (crossoverProbability < 0 || crossoverProbability > 1)
-        printUsage(argv[0]);
-    crossover->setProbability(crossoverProbability);
-
-    srand(seed);
-    ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
-                                        *mutation, *selection);
-    algorithm.run(iterations);
+    return 0;
 }

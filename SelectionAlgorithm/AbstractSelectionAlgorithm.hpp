@@ -8,11 +8,9 @@
 
 namespace ea {
     class SelectionAlgorithm {
-    protected:
-        std::unique_ptr<ScoringFunction> scoringFunction_;
+
     public:
-        virtual void selectCandidates(const Population& oldPopul, Population &newPopul) const = 0;
-        void setScoring(std::unique_ptr<ScoringFunction> &&scoringFunction);
+        virtual void selectCandidates(const Population& oldPopul, Population &newPopul, const std::vector<int > &scoresVector) const = 0;
     };
 }
 

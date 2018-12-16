@@ -3,6 +3,8 @@
 
 // std
 #include <memory>
+#include <algorithm>
+#include <iostream>
 
 // ea
 #include "CrossoverAlgorithm/CrossoverAlgorithm.hpp"
@@ -18,13 +20,31 @@ namespace ea {
         CrossoverAlgorithm& crossoverAlgorithm_;
         AbstractMutation& mutation_;
         SelectionAlgorithm& selectionAlgorithm_;
+        ScoringFunction& scoringFunction_;
+
+        std::vector<int > scoresVector_;
+        int minDiffValue_;
+        int medianValue_;
+        int standardDeviationValue_;
+
+    protected:
+        void scorePopulation();
+        void countStats();
+        void logStats();
+
+        void findMinDiffValue();
+        void findMedianValue();
+        void countStandardDeviationValue();
+
+
 
     public:
         EvolutionaryAlgorithm(Population &population,
                               CardsValueVector &cardsValues,
                               CrossoverAlgorithm &crossoverAlgorithm,
                               AbstractMutation &mutation,
-                              SelectionAlgorithm &selectionAlgorithm);
+                              SelectionAlgorithm &selectionAlgorithm,
+                              ScoringFunction &scoringFunction);
         void run(unsigned iterNum);
 
     };
