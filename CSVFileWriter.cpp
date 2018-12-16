@@ -15,6 +15,18 @@ namespace ea{
         writeNextLine();
     }
 
+    void CSVFileWriter::writeEvalutionaryAlgorithmStats(int minDiffValue, double medianValue,
+            double averageValue, double standardDeviationValue) {
+        ofstreamFile_<<minDiffValue;
+        ofstreamFile_<<separator_;
+        ofstreamFile_<<medianValue;
+        ofstreamFile_<<separator_;
+        ofstreamFile_<<averageValue;
+        ofstreamFile_<<separator_;
+        ofstreamFile_<<standardDeviationValue;
+        writeNextLine();
+    }
+
     CSVFileWriter::~CSVFileWriter() {
         ofstreamFile_.close();
     }

@@ -18,7 +18,8 @@ namespace ea {
         CSVFileWriter(std::string fileName, char separator);
         void dummyStringWrite(const std::string& text);
         /* TODO - not sure which stats that will be for now empty function without arguments */
-        void writeEvalutionaryAlgorithmStats();
+        void writeEvalutionaryAlgorithmStats(int minDiffValue, double medianValue,
+                double averageValue, double standardDeviationValue);
         ~CSVFileWriter();
 
     };

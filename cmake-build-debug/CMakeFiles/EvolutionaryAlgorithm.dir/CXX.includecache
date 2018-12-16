@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/patryk/CLionProjects/EvolutionaryAlgorithm/CSVFileWriter.cpp
+CSVFileWriter.hpp
+/home/patryk/CLionProjects/EvolutionaryAlgorithm/CSVFileWriter.hpp
+
+/home/patryk/CLionProjects/EvolutionaryAlgorithm/CSVFileWriter.hpp
+fstream
+-
+string
+-
+

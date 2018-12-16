@@ -34,6 +34,7 @@ void printUsage(char *name) {
     std::cerr << "-a - population size\n";
     std::cerr << "-b - crossover probability\n";
     std::cerr << "-i - iterations number\n";
+    std::cerr << "-f - output file name\n";
     exit(EXIT_FAILURE);
 }
 
@@ -64,6 +65,7 @@ int main(int argc, char** argv) {
         int opt, expected1, expected2, targetPower;
         unsigned seed, cardsNum, populationSize, iterations;
         double crossoverProbability = -1;
+        std::string fileName = "";
         std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
         std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
         std::unique_ptr<ea::ScoringFunction> scoringFunction = nullptr;
@@ -74,7 +76,7 @@ int main(int argc, char** argv) {
         seed = (unsigned) time(nullptr);
         expected1 = expected2 = cardsNum = populationSize = iterations = 0;
 
-        while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:")) != -1) {
+        while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:f:")) != -1) {
             switch (opt) {
                 case '1':
                     expected1 = atoi(optarg);
@@ -130,13 +132,16 @@ int main(int argc, char** argv) {
                 case 'i':
                     iterations = atoi(optarg);
                     break;
+                case 'f':
+                    fileName = optarg + fileName;
+                    break;
                 default:
                     printUsage(argv[0]);
             }
         }
         initPopulation(cardsNum, populationSize, cardValues, population);
         // If any of parameters is not set, abort.
-        if (!(selection && mutation && crossover && (targetPower > 0)))
+        if (!(selection && mutation && crossover && (targetPower > 0) && fileName!=""))
             printUsage(argv[0]);
         scoringFunction = std::make_unique<ea::PolynomalScore>(ea::PolynomalScore(targetPower, expected1,
                                                                                   expected2, *cardValues));
@@ -145,11 +150,11 @@ int main(int argc, char** argv) {
             printUsage(argv[0]);
         crossover->setProbability(crossoverProbability);
 
+        ea::CSVFileWriter csvFileWriter(fileName+".csv", ',');
+
         srand(seed);
         ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
-                                            *mutation, *selection, *scoringFunction);
-
-        std::cout<<"tutaj "<<std::endl;
+                                            *mutation, *selection, *scoringFunction, csvFileWriter);
 
         algorithm.run(iterations);
     }

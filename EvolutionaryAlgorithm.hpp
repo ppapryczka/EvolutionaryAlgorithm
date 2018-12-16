@@ -11,6 +11,7 @@
 #include "Mutation/AbstractMutation.hpp"
 #include "ScoringFunction/ScoringFunction.hpp"
 #include "SelectionAlgorithm/AbstractSelectionAlgorithm.hpp"
+#include "CSVFileWriter.hpp"
 
 namespace ea {
     class EvolutionaryAlgorithm {
@@ -21,22 +22,17 @@ namespace ea {
         AbstractMutation& mutation_;
         SelectionAlgorithm& selectionAlgorithm_;
         ScoringFunction& scoringFunction_;
+        CSVFileWriter& csvFileWriter_;
 
         std::vector<int > scoresVector_;
         int minDiffValue_;
-        int medianValue_;
-        int standardDeviationValue_;
+        double medianValue_;
+        double averageValue_;
+        double standardDeviationValue_;
 
     protected:
         void scorePopulation();
-        void countStats();
-        void logStats();
-
-        void findMinDiffValue();
-        void findMedianValue();
-        void countStandardDeviationValue();
-
-
+        void countAndLogStats();
 
     public:
         EvolutionaryAlgorithm(Population &population,
@@ -44,7 +40,8 @@ namespace ea {
                               CrossoverAlgorithm &crossoverAlgorithm,
                               AbstractMutation &mutation,
                               SelectionAlgorithm &selectionAlgorithm,
-                              ScoringFunction &scoringFunction);
+                              ScoringFunction &scoringFunction,
+                              CSVFileWriter &csvFileWriter);
         void run(unsigned iterNum);
 
     };

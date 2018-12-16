@@ -1,4 +1,5 @@
 #include "EvolutionaryAlgorithm.hpp"
+#include "CSVFileWriter.hpp"
 
 namespace ea{
 
@@ -9,13 +10,15 @@ namespace ea{
                                                  CrossoverAlgorithm& crossoverAlgorithm,
                                                  AbstractMutation& mutation,
                                                  SelectionAlgorithm& selectionAlgorithm,
-                                                 ScoringFunction& scoringFunction)
+                                                 ScoringFunction& scoringFunction,
+                                                 CSVFileWriter &csvFileWriter)
          :population_(population),
           cardsVaules_(cardsValues),
           crossoverAlgorithm_(crossoverAlgorithm),
           mutation_(mutation),
           selectionAlgorithm_(selectionAlgorithm),
-          scoringFunction_(scoringFunction)
+          scoringFunction_(scoringFunction),
+          csvFileWriter_(csvFileWriter)
     {}
 
     void EvolutionaryAlgorithm::run(unsigned iterNum) {
@@ -32,18 +35,6 @@ namespace ea{
         for (int i = 0; i < iterNum; ++i) {
 
             selectionAlgorithm_.selectCandidates(population_, selected, scoresVector_);
-            for(int i = 0; i < population_.size(); ++i){
-                for(int k = 0; k<population_[i].size(); ++k){
-                    if(population_[i][k] == true){
-                        std::cout<<1;
-                    }
-                    else{
-                        std::cout<<0;
-                    }
-                }
-                std::cout<<std::endl;
-            }
-
 
             for (auto&& individual: population_) {
                 // Make space for new population.
@@ -58,14 +49,9 @@ namespace ea{
 
             scoringFunction_.scoreCardsVector(population_[0]);
 
-            // TODO: log values into csv file
-            //scorePopulation();
-            //std::cout<<"ggg";
-            //findMinDiffValue();
-            findMinDiffValue();
-            std::cout<<minDiffValue_<<std::endl;
-            std::cout<<"---------------------"<<std::endl;
+            // log values into csv file
             scorePopulation();
+            countAndLogStats();
         }
     }
 
@@ -79,22 +65,41 @@ namespace ea{
         }
     }
 
-    void EvolutionaryAlgorithm::findMinDiffValue() {
+    void EvolutionaryAlgorithm::countAndLogStats() {
+        // sorting scores vector
         std::sort(scoresVector_.begin(), scoresVector_.end());
-        minDiffValue_ = scoresVector_[0];
-    }
 
-    void EvolutionaryAlgorithm::findMedianValue() {
+        // setting min value
+        minDiffValue_ = scoresVector_[0];
+
+        // setting median value
         if(scoresVector_.size()%2 == 1){
-            medianValue_ = scoresVector_[scoresVector_.size()/2];
+            medianValue_ = static_cast<double>(scoresVector_[scoresVector_.size()/2]);
         }
         else {
-            medianValue_ = scoresVector_[scoresVector_.size()/2] - scoresVector_[scoresVector_.size()/2 - 1];
+            medianValue_ = static_cast<double>((scoresVector_[scoresVector_.size()/2] + scoresVector_[scoresVector_.size()/2 - 1])/2);
         }
-    }
 
-    void EvolutionaryAlgorithm::countStandardDeviationValue() {
-        double average = std::accumulate(scoresVector_.begin(), scoresVector_.end(), 0)/scoresVector_.size();
+        // counting average value
+        averageValue_ = std::accumulate(scoresVector_.begin(), scoresVector_.end(), 0)/ static_cast<double>(scoresVector_.size());
 
+        // counting standard deviation
+        for(auto &score : scoresVector_){
+            standardDeviationValue_ += static_cast<double>((score-averageValue_)*(score-averageValue_));
+        }
+
+        standardDeviationValue_ = standardDeviationValue_/ static_cast<double>(scoresVector_.size());
+        standardDeviationValue_ = std::sqrt(standardDeviationValue_);
+
+        std::cout<<"Scores:"<<std::endl;
+        for(auto &score : scoresVector_){
+            std::cout<<score<<std::endl;
+        }
+        std::cout<<"Min value: "<<minDiffValue_<<std::endl;
+        std::cout<<"Median: "<<medianValue_<<std::endl;
+        std::cout<<"Average: "<<averageValue_<<std::endl;
+        std::cout<<"Standard deviation "<<standardDeviationValue_<<std::endl;
+
+        csvFileWriter_.writeEvalutionaryAlgorithmStats(minDiffValue_, medianValue_, averageValue_, standardDeviationValue_);
     }
 }
