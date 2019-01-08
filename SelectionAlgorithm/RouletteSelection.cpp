@@ -1,8 +1,8 @@
 #include "RouletteSelection.h"
 #include "../common.hpp"
 
-ea::RouletteSelection::RouletteSelection(double a):
-        a(a)
+ea::RouletteSelection::RouletteSelection(double beta):
+        beta(beta)
 {}
 
 void ea::RouletteSelection::selectCandidates(const ea::Population& oldPopul, ea::Population& newPopul, const std::vector<int > &scoresVector) const {
@@ -17,7 +17,7 @@ void ea::RouletteSelection::selectCandidates(const ea::Population& oldPopul, ea:
     scores.reserve(scoresVector.size());
 
     for (unsigned int i = 0; i < scoresVector.size(); ++i) {
-        scores[i] = scoresVector[i] + a;
+        scores[i] = std::exp(-beta/scoresVector[i]);
         sum += scores[i];
     }
 

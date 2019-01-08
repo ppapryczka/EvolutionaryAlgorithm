@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+
+\begin{document}
+
+
+\begin{center}
+\huge
+ALHE -- dokumentacja i sprawozdanie\\
+Temat: SK.ALHE.6 \\
+
+\bigskip
+
+\LARGE
+Patryk Pankiewicz, Maciej Turski \\
+07.01.2019 
+\end{center}
+
+\newpage
+
+\section{Temat projektu}
+
+Masz 10 kart ponumerowanych od 1 do 10. Znajdź przy uzyciu Algorytmu Ewolucyjnego sposób na podział kart na dwie kupki w taki sposób, że suma kart na pierwszej kupce jest jak najbliższa wartości A, a suma kart na drugiej kupce jest jak najblizsza wartości B. Należy zastosować dodatkowo inny wybrany algorytm i porównać wyniki.
+
+\section{Opis funkcjonalny}
+Do rozwiązania problemu został użyty algorytm ewolucyjny, wykorzystujący krzyżowanie i mutacje. Celem algorytmu jest minimalizacja różnicy. Wartości kart są przechowywane jako list i nie ma potrzeby by była ona kopiowana dla każdego osobnika - jest on reprezentowany jako lista przynależności kart do stosów. Wykorzystane metody zostały wyszczególnione poniżej. 
+
+
+\begin{itemize}
+	\item{\textbf{Funkcja oceniająca} - musi być dostosowana do celu minimalizacji i zostały zaimplementowane jej nastepujące wersje:
+		\begin{itemize}
+			\item{suma modułów różnicy wartości kart na stosach} 
+			\item{suma różnicy wartości kart na stosach podniesiona do potęgi \\ $>=2$ (jest ona parametrem algorytmu} 
+		\end{itemize} 
+	}
+	\item{\textbf{Selekcja} osobników - zostały stworzone trzy wskazane w czasie wykładów z przedmiotu podejścia:
+		\begin{itemize}
+			\item{metoda turniejowa}
+			\item{metoda progowa}
+			\item{metoda proporcjonalna}
+		\end{itemize}
+	}
+	\item{\textbf{Mutacja} - realizowana poprzez zmianę przynależności karty do stosu}
+	\item{\textbf{Krzyżowanie} - zostały opracowane dwa rozwiązania:
+		\begin{itemize}
+			\item{dla każdej karty z listy losowany będzie z jednakowym prawdopodobieństwem osobnik z którego zostanie wzięta informacja gdzie ma przynależeć karta}
+			\item{wylosowanie indeks lub indeksów względem których przynależność kart zostanie zmieniona na przeciwną}
+		\end{itemize}			
+		} 
+\end{itemize}
+
+\section{Opis interfejsu użytkownika}
+Aplikacja posiada intefejs konsolowy. Argumenty aplikacji:
+
+\begin{itemize}
+	\item{-1 wartość - wartość oczekiwana dla pierwszego stosu, wymagane}
+	\item{-2 wartość - wartość oczekiwana dla pierwszego stosu, wymagane}
+	\item{rodzaj metody selekcji, wymagane - jeden argument z poniższych: 
+		\begin{itemize}
+			\item{-r wartość, selekcja proporcjonalna, wartość odpowiada liczbie \textit{beta}, która jest używana przy obliczniu wartości prawdopodobieństwa ze wzoru $exp(-beta*z_i)$, gdzie $z_i$ odpowiada wartości celu $i$-tego osobnika}
+			\item{-t wartość, selekcja turniejowa, wartość odpowiada rozmiarowi szranek}
+			\item{-h wartość, selekcja progowa, wartość odpowiada wartości progu}
+		\end{itemize}
+		}
+	\item{-m wartość - wartość odpowiada prawdopodobieństwu mutacji, wymagane}
+	\item{-v wartość - wybór funkcji celu, wartość odpowiada potędze do której zostanie podniesiona różnica wartość kart na obu stosach, wymagane }
+	\item{rodzaj metody krzyżowania, wymagane - jeden argument z poniższych:
+		\begin{itemize}
+			\item{-u - wybór każdej właściciela dla każdej karty z osobna}
+			\item{-k wartość - wybór $k$ punktów względem których zostanie zmieniona przynależność kart, wartość odpowiada liczbie $k$} 
+		\end{itemize}
+		}
+	\item{-s wartość - wartość odpowiada wartości ziarna, jeśli nie podane zostanie ustawione na losową}
+	\item{-c wartość - wartość odpowiada ilości kart, wymagane}
+	\item{-a wartość - wartość odpowiada rozmiarowi populacji, wymagane}
+	\item{-b wartość - wartość odpowiada prawdopodobieństwu mutacji, wymagane }
+	\item{-i wartość - wartość odpowiada ilości iteracji, wymagane }
+	\item{-f wartość - wartość odpowiada prefiksowi pliku wynikowego}
+\end{itemize}
+
+\section{Postać plików wynikowych}
+Pliki wynikowe są plikami w formacie csv, z seperatorem '',''. Nazwa pliku wynikowego jest wartością podaną dla argumentu -f, będącego prefiksem, i argumentów programu, tak by ułatwić identyfikacje plików wynikowych. \\
+
+Przykład nazwy pliku wynikowego: 
+\verbatimfont{\footnotesize}
+\begin{verbatim}
+	wynik_-1_100_-2_100_-r_1_-m_0.09_-v_2_-u_-c_10_-a_30_-b_0.10_-i_200.csv
+\end{verbatim}
+
+Program został wywołany z następującymi argumentami:
+\verbatimfont{\footnotesize}
+\begin{verbatim}
+-1 100 -2 100 -r 1 -m 0.09 -v 2 -u -c 10 -a 30 -b 0.10 -i 200 -f wynik
+\end{verbatim}
+
+Pozwala to w prosty sposób zidentyfikować wybrane argumenty. Program nie posiada żadnych dodatkowych pilków konfiguracyjny - wszystkie parametry są ustalane za pomocą argumentów. 
+
+\bigskip
+
+Dla każdej iteracji w wynikowym pliku csv zapisywane są następujące informacje:
+\begin{itemize}
+	\item{wartość funkcji celu dla najmniejszego osobnika}
+	\item{wartość mediany populacji}
+	\item{wartość średnia populacji}
+	\item{wartość odchylenia standardowego populacji}
+\end{itemize}
+
+\section{Opis implementacji}
+Algorytm został zaimplementowany w języku C++ w standardzie C++14 z użyciem wyłącznie bibliotek dostepnych w standardzie. Program został on zaprojektowny w sposób modularny z wykorzystaniem klas abstrakcyjnych. Główne klasy algorytmu:
+
+\begin{itemize}
+	\item{\textbf{Mutation} - klasa odpowiedzialna za przeprowadzenie mutacji z zadanym prawdopodobieństwem}
+	\item{\textbf{CrossoverAlgorithm} - klasa abstrakcyjna będąca klasą bazową dla algorytmów krzyżowania}
+	\item{\textbf{ScoringFunction} - klasa, która pozwala na obliczenie zadanej funkcji celu}
+	\item{\textbf{SelectionAlgorithm} - klasa abstrakcyjna będąca klasą bazową dla algorytmów selekcji}
+	\item{\textbf{EvolutionaryAlgorithm} - główna klasa algorytmu}
+	\item{\textbf{CSVFileWriter} - klasa opowiadająca za zapis wyników do pliku csv} 
+\end{itemize}
+
+Dodatkowo do zautomatyzowania testowania i generacji wykresów z danych wynikowych został użyty język Python. Zostały użyte nastepujące moduły i biblioteki:
+
+\begin{itemize}
+	\item{pandas\footnote{https://pandas.pydata.org/}, biblioteka umożlwiająca łatwą obsługę plików o rozszerzeniu csv}
+	\item{numPy\footnote{http://www.numpy.org/}, biblioteka obliczeniowa, tu użyta do obsługi tablic i prostych algorytmów} 
+	\item{matplotlib\footnote{https://matplotlib.org/}, biblioteka do generowania wykresów}
+	\item{subprocess\footnote{https://docs.python.org/3/library/subprocess.html}, moduł umożlwiający wywołanie plików wykonywalnych} 	
+\end{itemize}
+
+
+\section{•}
+
+
+\end{document}

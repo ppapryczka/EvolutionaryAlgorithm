@@ -3,14 +3,16 @@
 
 #include "AbstractSelectionAlgorithm.hpp"
 
+#include <algorithm>
+
 namespace ea {
     class RouletteSelection : public SelectionAlgorithm {
     private:
-        double a;
+        double beta;
         mutable std::vector<double> scores;
 
     public:
-        explicit RouletteSelection(double a);
+        explicit RouletteSelection(double beta);
         void selectCandidates(const Population& oldPopul, Population &newPopul, const std::vector<int > &scoresVector) const override;
     };
 }

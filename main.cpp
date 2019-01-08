@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
         int opt, expected1, expected2, targetPower;
         unsigned seed, cardsNum, populationSize, iterations;
         double crossoverProbability = -1;
-        std::string fileName = "";
+        std::string fileName, commandName;
         std::unique_ptr<ea::CrossoverAlgorithm> crossover = nullptr;
         std::unique_ptr<ea::AbstractMutation> mutation = nullptr;
         std::unique_ptr<ea::ScoringFunction> scoringFunction = nullptr;
@@ -80,57 +80,84 @@ int main(int argc, char** argv) {
             switch (opt) {
                 case '1':
                     expected1 = atoi(optarg);
+                    fileName +="_-1_";
+                    fileName +=optarg;
                     break;
                 case '2':
                     expected2 = atoi(optarg);
+                    fileName +="_-2_";
+                    fileName +=optarg;
                     break;
                 case 'r':
                     if (selection)
                         printUsage(argv[0]);
                     selection = std::make_unique<ea::RouletteSelection>(ea::RouletteSelection(atof(optarg)));
+                    fileName +="_-r_";
+                    fileName +=optarg;
                     break;
                 case 't':
                     if (selection)
                         printUsage(argv[0]);
                     selection = std::make_unique<ea::TournamentSelection>(ea::TournamentSelection(atoi(optarg)));
+                    fileName +="_-t_";
+                    fileName +=optarg;
                     break;
                 case 'h':
                     if (selection)
                         printUsage(argv[0]);
                     selection = std::make_unique<ea::ThresholdSelection>(ea::ThresholdSelection(atoi(optarg)));
+                    fileName +="_-h_";
+                    fileName +=optarg;
                     break;
                 case 'm':
                     if (mutation)
                         printUsage(argv[0]);
                     mutation = std::make_unique<ea::Mutation>(ea::Mutation(atof(optarg)));
+                    fileName +="_-m_";
+                    fileName +=optarg;
                     break;
                 case 'v':
                     targetPower = atoi(optarg);
+                    fileName +="_-v_";
+                    fileName +=optarg;
                     break;
                 case 'u':
                     if (crossover)
                         printUsage(argv[0]);
                     crossover = std::make_unique<ea::UniformCrossover>(ea::UniformCrossover());
+                    fileName +="_-u";
                     break;
                 case 'k':
                     if (crossover)
                         printUsage(argv[0]);
                     crossover = std::make_unique<ea::KpointCrossover>(ea::KpointCrossover(atoi(optarg)));
+                    fileName +="_-k_";
+                    fileName +=optarg;
                     break;
                 case 's':
                     seed = atoi(optarg);
+                    fileName +="_-s_";
+                    fileName +=optarg;
                     break;
                 case 'c':
                     cardsNum = atoi(optarg);
+                    fileName +="_-c_";
+                    fileName +=optarg;
                     break;
                 case 'a':
                     populationSize = atoi(optarg);
+                    fileName +="_-a_";
+                    fileName +=optarg;
                     break;
                 case 'b':
                     crossoverProbability = atof(optarg);
+                    fileName +="_-b_";
+                    fileName +=optarg;
                     break;
                 case 'i':
                     iterations = atoi(optarg);
+                    fileName +="_-i_";
+                    fileName +=optarg;
                     break;
                 case 'f':
                     fileName = optarg + fileName;
@@ -157,6 +184,8 @@ int main(int argc, char** argv) {
                                             *mutation, *selection, *scoringFunction, csvFileWriter);
 
         algorithm.run(iterations);
+
+        std::cout<<"Done. Result stored in:\n"+fileName+".csv\n";
     }
     catch (std::exception &ex){
         std::cout<<ex.what()<<std::endl;

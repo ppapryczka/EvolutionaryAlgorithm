@@ -66,39 +66,49 @@ namespace ea{
     }
 
     void EvolutionaryAlgorithm::countAndLogStats() {
+        int minDiffValue_;
+        double medianValue_;
+        double averageValue_;
+        double standardDeviationValue_;
+
+        std::vector<int> scoresVectorCopy = scoresVector_;
+
         // sorting scores vector
-        std::sort(scoresVector_.begin(), scoresVector_.end());
+        std::sort(scoresVectorCopy.begin(), scoresVectorCopy.end());
 
         // setting min value
-        minDiffValue_ = scoresVector_[0];
+        minDiffValue_ = scoresVectorCopy[0];
 
         // setting median value
-        if(scoresVector_.size()%2 == 1){
-            medianValue_ = static_cast<double>(scoresVector_[scoresVector_.size()/2]);
+        if(scoresVectorCopy.size()%2 == 1){
+            medianValue_ = static_cast<double>(scoresVectorCopy[scoresVectorCopy.size()/2]);
         }
         else {
-            medianValue_ = static_cast<double>((scoresVector_[scoresVector_.size()/2] + scoresVector_[scoresVector_.size()/2 - 1])/2);
+            medianValue_ = static_cast<double>((scoresVectorCopy[scoresVectorCopy.size()/2] + scoresVectorCopy[scoresVectorCopy.size()/2 - 1])/2);
         }
 
         // counting average value
-        averageValue_ = std::accumulate(scoresVector_.begin(), scoresVector_.end(), 0)/ static_cast<double>(scoresVector_.size());
+        averageValue_ = std::accumulate(scoresVectorCopy.begin(), scoresVectorCopy.end(), 0)/ static_cast<double>(scoresVectorCopy.size());
 
         // counting standard deviation
-        for(auto &score : scoresVector_){
+        for(auto &score : scoresVectorCopy){
             standardDeviationValue_ += static_cast<double>((score-averageValue_)*(score-averageValue_));
         }
 
-        standardDeviationValue_ = standardDeviationValue_/ static_cast<double>(scoresVector_.size());
+        standardDeviationValue_ = standardDeviationValue_/ static_cast<double>(scoresVectorCopy.size());
         standardDeviationValue_ = std::sqrt(standardDeviationValue_);
 
-        std::cout<<"Scores:"<<std::endl;
-        for(auto &score : scoresVector_){
-            std::cout<<score<<std::endl;
-        }
-        std::cout<<"Min value: "<<minDiffValue_<<std::endl;
-        std::cout<<"Median: "<<medianValue_<<std::endl;
-        std::cout<<"Average: "<<averageValue_<<std::endl;
-        std::cout<<"Standard deviation "<<standardDeviationValue_<<std::endl;
+        /*
+            std::cout<<"Scores:"<<std::endl;
+            for(auto &score : scoresVectorCopy){
+                std::cout<<score<<std::endl;
+            }
+            std::cout<<"Min value: "<<minDiffValue_<<std::endl;
+            std::cout<<"Median: "<<medianValue_<<std::endl;
+            std::cout<<"Average: "<<averageValue_<<std::endl;
+            std::cout<<"Standard deviation "<<standardDeviationValue_<<std::endl;
+
+        */
 
         csvFileWriter_.writeEvalutionaryAlgorithmStats(minDiffValue_, medianValue_, averageValue_, standardDeviationValue_);
     }

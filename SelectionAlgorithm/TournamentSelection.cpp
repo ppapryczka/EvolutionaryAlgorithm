@@ -7,19 +7,19 @@ namespace ea {
     {}
     void TournamentSelection::selectCandidates(const ea::Population &oldPopul, ea::Population &newPopul, const std::vector<int > &scoresVector) const {
         unsigned currIdx, bestIdx;
-        int currScore, bestScore;
+        int currScore, worstScore;
 
         if (2 * oldPopul.size() != newPopul.size())
             throw std::runtime_error("Wrong size of at least one population in selection.");
         for (auto& individual : newPopul) {
             bestIdx = 0;
-            bestScore = INT_MIN;
+            worstScore = INT_MAX;
             for (int i = 0; i < tournamentSize_; ++i) {
                 currIdx = (unsigned) (randFloat() * (oldPopul.size() - 1));
                 currScore = scoresVector[currIdx];
-                if (currScore > bestScore) {
+                if (currScore < worstScore) {
                     bestIdx = currIdx;
-                    bestScore = currScore;
+                    worstScore = currScore;
                 }
             }
             individual = oldPopul[bestIdx];

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-import matplotlib as mpl
-import pylab
+import matplotlib.pylab as plt
+
 
 def read_data(fileName):
     data = pd.read_csv(fileName, delimiter=",", header = None)
@@ -9,29 +9,37 @@ def read_data(fileName):
     return data
 
 
-if __name__ == "__main__":
-    data = read_data("nowy.csv")
+def make_charts(fileName):
+    data = read_data(fileName)
 
-    x = range(0, data[0].size)  # lista argumentów x
+    x_axis = range(0, data[0].size)
 
-    pylab.plot(x, data[0])
-    pylab.title('Min value')
-    pylab.grid(True)
-    pylab.show()
+    plt.plot(x_axis, data[0])
+    plt.title('Min value')
+    plt.grid(True)
+    plt.show()
 
-    pylab.plot(x, data[1])
-    pylab.title('Median')
-    pylab.grid(True)
-    pylab.show()
+    plt.plot(x_axis, data[1])
+    plt.title('Median')
+    plt.grid(True)
+    plt.show()
 
-    pylab.plot(x, data[2])
-    pylab.title('Average')
-    pylab.grid(True)
-    pylab.show()
+    plt.plot(x_axis, data[2])
+    plt.title('Average')
+    plt.grid(True)
+    plt.show()
 
-    pylab.plot(x, data[3])
-    pylab.title('Standard deviation')
-    pylab.grid(True)
-    pylab.show()
+    plt.plot(x_axis, data[3])
+    plt.title('Standard deviation')
+    plt.grid(True)
+    plt.show()
 
-    print(" make charts ")
+    x = np.sort(data[0])
+
+    y = np.arange(1, len(x) + 1) / len(x)
+
+    plt.plot(x, y, marker='.', linestyle='none')
+
+    plt.show()
+
+

@@ -7,7 +7,7 @@ namespace ea{
     CSVFileWriter::CSVFileWriter(std::string fileName, char separator)
         :fileName_(fileName), separator_(separator)
     {
-        ofstreamFile_.open(fileName_, std::ios::app);
+        ofstreamFile_.open(fileName_, std::ios::ate | std::ios::out);
     }
 
     void CSVFileWriter::dummyStringWrite(const std::string &text) {

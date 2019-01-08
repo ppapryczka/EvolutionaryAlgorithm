@@ -25,10 +25,6 @@ namespace ea {
         CSVFileWriter& csvFileWriter_;
 
         std::vector<int > scoresVector_;
-        int minDiffValue_;
-        double medianValue_;
-        double averageValue_;
-        double standardDeviationValue_;
 
     protected:
         void scorePopulation();
