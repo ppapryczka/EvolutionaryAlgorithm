@@ -21,7 +21,7 @@ namespace ea {
         std::sort(scores.begin(), scores.end(), std::less<>());// Sort in decreasing order.
         for (unsigned i = 0; i < newPopul.size(); ++i) {
             selectedScoreIdx = (unsigned)(randFloat() * (threshold_ - 1));
-            selectedIdx = scores[scores.size() - selectedScoreIdx - 1].second;
+            selectedIdx = scores[selectedScoreIdx].second;
             newPopul[i] = oldPopul[selectedIdx];
         }
         scores.clear();

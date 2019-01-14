@@ -19,7 +19,8 @@ def make_ECDF(fileName_List):
     x = np.sort(minValues)
     y = np.arange(1, len(minValues) + 1) / len(minValues)
 
-    plt.plot(x, y, marker='.', linestyle='none')
+ #   plt.plot(x, y, marker='.', linestyle='none')
+    plt.plot(x, y, marker='.')
     plt.title('ECDF')
     plt.grid(True)
     fig = plt.gcf()

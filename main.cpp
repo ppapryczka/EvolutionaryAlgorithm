@@ -166,6 +166,7 @@ int main(int argc, char** argv) {
                     printUsage(argv[0]);
             }
         }
+        srand(seed);
         initPopulation(cardsNum, populationSize, cardValues, population);
         // If any of parameters is not set, abort.
         if (!(selection && mutation && crossover && (targetPower > 0) && fileName!=""))
@@ -179,7 +180,6 @@ int main(int argc, char** argv) {
 
         ea::CSVFileWriter csvFileWriter(fileName+".csv", ',');
 
-        srand(seed);
         ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                             *mutation, *selection, *scoringFunction, csvFileWriter);
 
