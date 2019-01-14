@@ -13,11 +13,17 @@ void ea::RouletteSelection::selectCandidates(const ea::Population& oldPopul, ea:
     unsigned currIdx;
     double sum = 0;
     double random;
+    double maxScore = 0;
 
     scores.reserve(scoresVector.size());
 
     for (unsigned int i = 0; i < scoresVector.size(); ++i) {
-        scores[i] = std::exp(-beta/scoresVector[i]);
+        if (scoresVector[i] > maxScore)
+            maxScore = scoresVector[i];
+    }
+    for (unsigned int i = 0; i < scoresVector.size(); ++i) {
+        double sc = std::exp(-beta * (double)scoresVector[i] / maxScore);
+        scores[i] = sc;
         sum += scores[i];
     }
 
