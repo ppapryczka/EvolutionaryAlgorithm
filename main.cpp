@@ -14,6 +14,62 @@
 #include "SelectionAlgorithm/ThresholdSelection.hpp"
 #include "SelectionAlgorithm/TournamentSelection.hpp"
 
+std::vector<bool> decimalToBinaryNumber(int x, int n)
+{
+    int* binaryNumber = new int(x);
+    int i = 0;
+    std::vector<bool> ret;
+
+    while (x > 0) {
+        binaryNumber[i] = x % 2;
+        x = x / 2;
+        i++;
+    }
+
+    // leftmost digits are filled with 0
+    for (int j = 0; j < n - i; j++)
+        ret.emplace_back(false);
+ //       std::cout << '0';
+
+    for (int j = i - 1; j >= 0; j--) {
+        if (binaryNumber[j] > 0) {
+            ret.emplace_back(true);
+        } else {
+            ret.emplace_back(false);
+        }
+    }
+    return ret;
+//        std::cout << binaryNumber[j];
+}
+
+void generateGrayarr(ea::CardsValueVector& scoresVector, ea::ScoringFunction* sf)
+{
+    int n = scoresVector.size();
+    int N = 1 << n;
+    int min = INT32_MAX;
+    std::vector<bool> ret;
+
+    for (int i = 0; i < N; i++) {
+
+        // generate gray code of corresponding
+        // binary number of integer i.
+        int x = i ^ (i >> 1);
+
+        // printing gray code
+        ret = decimalToBinaryNumber(x, n);
+
+        {
+            min = std::min(min, sf->scoreCardsVector(ret));
+
+        }
+
+        for (auto k : ret) {
+            std::cout << k << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout<<min<<std::endl;
+}
 
 void findMin(ea::CardsValueVector& scoresVector, ea::ScoringFunction* sf){
     std::vector<bool> ownersVector;
@@ -80,7 +136,7 @@ void initPopulation(unsigned cardsNum, unsigned populationSize, std::unique_ptr<
         throw std::runtime_error("Too small population or number of cards");
     cardValues.reserve(cardsNum);
     for (signed i = 0; i < cardsNum; i++) {
-        cardValues.emplace_back((rand()%10) + 1);
+        cardValues.emplace_back((rand()%1000) + 1);
     }
 
     population.resize(populationSize);
@@ -109,6 +165,7 @@ int main(int argc, char** argv) {
 
         seed = (unsigned) time(nullptr);
         expected1 = expected2 = cardsNum = populationSize = iterations = 0;
+
 
         while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:f:")) != -1) {
             switch (opt) {
@@ -214,7 +271,8 @@ int main(int argc, char** argv) {
 
         ea::CSVFileWriter csvFileWriter(fileName+".csv", ',');
 
-        findMin(*cardValues, scoringFunction.get());
+        //generateGrayarr(*cardValues, scoringFunction.get());
+ //       findMin(*cardValues, scoringFunction.get());
 
         ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                             *mutation, *selection, *scoringFunction, csvFileWriter);
