@@ -1,6 +1,6 @@
 #include "ScoringFunction.hpp"
 
-ea::ScoringFunction::ScoringFunction(unsigned int firstGroupExpected, unsigned int secondGroupExpected,
+ea::ScoringFunction::ScoringFunction(int firstGroupExpected, int secondGroupExpected,
                                      CardsValueVector& cardValues):
         firstGroupExpected_(firstGroupExpected),
         secondGroupExpected_(secondGroupExpected),

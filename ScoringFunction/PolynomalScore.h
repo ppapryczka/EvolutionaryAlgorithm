@@ -10,7 +10,7 @@ namespace ea {
     private:
         int power_;
     public:
-        PolynomalScore(unsigned int power, unsigned int firstGroupExpected, unsigned int secondGroupExpected,
+        PolynomalScore(unsigned int power, int firstGroupExpected, int secondGroupExpected,
                                 CardsValueVector& cardValues);
         int scoreCardsVector(const CardsOwnersVector& cardsOwnersVector) const override;
     };

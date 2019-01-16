@@ -2,6 +2,8 @@
 
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
+\usepackage{subfig}
+\usepackage{graphicx}
 
 \makeatletter
 \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
@@ -26,14 +28,14 @@ Patryk Pankiewicz, Maciej Turski \\
 
 \section{Temat projektu}
 
-Masz 10 kart ponumerowanych od 1 do 10. Znajdź przy uzyciu Algorytmu Ewolucyjnego sposób na podział kart na dwie kupki w taki sposób, że suma kart na pierwszej kupce jest jak najbliższa wartości A, a suma kart na drugiej kupce jest jak najblizsza wartości B. Należy zastosować dodatkowo inny wybrany algorytm i porównać wyniki.
+Masz 10 kart ponumerowanych od 1 do 10. Znajdź przy użyciu Algorytmu Ewolucyjnego sposób na podział kart na dwie kupki w taki sposób, że suma kart na pierwszej kupce jest jak najbliższa wartości A, a suma kart na drugiej kupce jest jak najbliższa wartości B. Należy zastosować dodatkowo inny wybrany algorytm i porównać wyniki.
 
 \section{Opis funkcjonalny}
 Do rozwiązania problemu został użyty algorytm ewolucyjny, wykorzystujący krzyżowanie i mutacje. Celem algorytmu jest minimalizacja różnicy. Wartości kart są przechowywane jako list i nie ma potrzeby by była ona kopiowana dla każdego osobnika - jest on reprezentowany jako lista przynależności kart do stosów. Wykorzystane metody zostały wyszczególnione poniżej. 
 
 
 \begin{itemize}
-	\item{\textbf{Funkcja oceniająca} - musi być dostosowana do celu minimalizacji i zostały zaimplementowane jej nastepujące wersje:
+	\item{\textbf{Funkcja oceniająca} - musi być dostosowana do celu minimalizacji i zostały zaimplementowane jej następujące wersje:
 		\begin{itemize}
 			\item{suma modułów różnicy wartości kart na stosach} 
 			\item{suma różnicy wartości kart na stosach podniesiona do potęgi \\ $>=2$ (jest ona parametrem algorytmu} 
@@ -56,15 +58,15 @@ Do rozwiązania problemu został użyty algorytm ewolucyjny, wykorzystujący krz
 \end{itemize}
 
 \section{Opis interfejsu użytkownika}
-Aplikacja posiada intefejs konsolowy. Argumenty aplikacji:
+Aplikacja posiada interfejs konsolowy. Argumenty aplikacji:
 
 \begin{itemize}
 	\item{-1 wartość - wartość oczekiwana dla pierwszego stosu, wymagane}
 	\item{-2 wartość - wartość oczekiwana dla pierwszego stosu, wymagane}
 	\item{rodzaj metody selekcji, wymagane - jeden argument z poniższych: 
 		\begin{itemize}
-			\item{-r wartość, selekcja proporcjonalna, wartość odpowiada liczbie \textit{beta}, która jest używana przy obliczniu wartości prawdopodobieństwa ze wzoru $exp(-beta*z_i)$, gdzie $z_i$ odpowiada wartości celu $i$-tego osobnika}
-			\item{-t wartość, selekcja turniejowa, wartość odpowiada rozmiarowi szranek}
+			\item{-r wartość, selekcja proporcjonalna, wartość odpowiada liczbie \textit{beta}, która jest używana przy obliczaniu wartości prawdopodobieństwa ze wzoru $exp(\frac{- \beta \cdot z_i}{z_{max}})$, gdzie $z_i$ odpowiada wartości celu $i$-tego osobnika}
+			\item{-t wartość, selekcja turniejowa, wartość odpowiada rozmiarowi szranków}
 			\item{-h wartość, selekcja progowa, wartość odpowiada wartości progu}
 		\end{itemize}
 		}
@@ -72,20 +74,20 @@ Aplikacja posiada intefejs konsolowy. Argumenty aplikacji:
 	\item{-v wartość - wybór funkcji celu, wartość odpowiada potędze do której zostanie podniesiona różnica wartość kart na obu stosach, wymagane }
 	\item{rodzaj metody krzyżowania, wymagane - jeden argument z poniższych:
 		\begin{itemize}
-			\item{-u - wybór każdej właściciela dla każdej karty z osobna}
+			\item{-u - wybór właściciela dla każdej karty z osobna}
 			\item{-k wartość - wybór $k$ punktów względem których zostanie zmieniona przynależność kart, wartość odpowiada liczbie $k$} 
 		\end{itemize}
 		}
 	\item{-s wartość - wartość odpowiada wartości ziarna, jeśli nie podane zostanie ustawione na losową}
 	\item{-c wartość - wartość odpowiada ilości kart, wymagane}
 	\item{-a wartość - wartość odpowiada rozmiarowi populacji, wymagane}
-	\item{-b wartość - wartość odpowiada prawdopodobieństwu mutacji, wymagane }
+	\item{-b wartość - wartość odpowiada prawdopodobieństwu krzyżowania, wymagane }
 	\item{-i wartość - wartość odpowiada ilości iteracji, wymagane }
 	\item{-f wartość - wartość odpowiada prefiksowi pliku wynikowego}
 \end{itemize}
 
 \section{Postać plików wynikowych}
-Pliki wynikowe są plikami w formacie csv, z seperatorem '',''. Nazwa pliku wynikowego jest wartością podaną dla argumentu -f, będącego prefiksem, i argumentów programu, tak by ułatwić identyfikacje plików wynikowych. \\
+Pliki wynikowe są plikami w formacie csv, z separatorem '',''. Nazwa pliku wynikowego jest wartością podaną dla argumentu -f, będącego prefiksem, i argumentów programu, tak by ułatwić identyfikacje plików wynikowych. \\
 
 Przykład nazwy pliku wynikowego: 
 \verbatimfont{\footnotesize}
@@ -99,7 +101,7 @@ Program został wywołany z następującymi argumentami:
 -1 100 -2 100 -r 1 -m 0.09 -v 2 -u -c 10 -a 30 -b 0.10 -i 200 -f wynik
 \end{verbatim}
 
-Pozwala to w prosty sposób zidentyfikować wybrane argumenty. Program nie posiada żadnych dodatkowych pilków konfiguracyjny - wszystkie parametry są ustalane za pomocą argumentów. 
+Pozwala to w prosty sposób zidentyfikować wybrane argumenty. Program nie posiada żadnych dodatkowych plików konfiguracyjny - wszystkie parametry są ustalane za pomocą argumentów. 
 
 \bigskip
 
@@ -111,8 +113,10 @@ Dla każdej iteracji w wynikowym pliku csv zapisywane są następujące informac
 	\item{wartość odchylenia standardowego populacji}
 \end{itemize}
 
+\newpage
+
 \section{Opis implementacji}
-Algorytm został zaimplementowany w języku C++ w standardzie C++14 z użyciem wyłącznie bibliotek dostepnych w standardzie. Program został on zaprojektowny w sposób modularny z wykorzystaniem klas abstrakcyjnych. Główne klasy algorytmu:
+Algorytm został zaimplementowany w języku C++ w standardzie C++14 z użyciem wyłącznie bibliotek dostępnych w standardzie. Program został zaprojektowany w sposób modularny z wykorzystaniem klas abstrakcyjnych. Główne klasy algorytmu:
 
 \begin{itemize}
 	\item{\textbf{Mutation} - klasa odpowiedzialna za przeprowadzenie mutacji z zadanym prawdopodobieństwem}
@@ -123,17 +127,129 @@ Algorytm został zaimplementowany w języku C++ w standardzie C++14 z użyciem w
 	\item{\textbf{CSVFileWriter} - klasa opowiadająca za zapis wyników do pliku csv} 
 \end{itemize}
 
-Dodatkowo do zautomatyzowania testowania i generacji wykresów z danych wynikowych został użyty język Python. Zostały użyte nastepujące moduły i biblioteki:
+Dodatkowo do zautomatyzowania testowania i generacji wykresów z danych wynikowych został użyty język Python. Zostały użyte następujące moduły i biblioteki tego języka:
 
 \begin{itemize}
-	\item{pandas\footnote{https://pandas.pydata.org/}, biblioteka umożlwiająca łatwą obsługę plików o rozszerzeniu csv}
+	\item{pandas\footnote{https://pandas.pydata.org/}, biblioteka umożliwiająca łatwą obsługę plików o rozszerzeniu csv}
 	\item{numPy\footnote{http://www.numpy.org/}, biblioteka obliczeniowa, tu użyta do obsługi tablic i prostych algorytmów} 
 	\item{matplotlib\footnote{https://matplotlib.org/}, biblioteka do generowania wykresów}
-	\item{subprocess\footnote{https://docs.python.org/3/library/subprocess.html}, moduł umożlwiający wywołanie plików wykonywalnych} 	
+	\item{subprocess\footnote{https://docs.python.org/3/library/subprocess.html}, moduł umożliwiający wywołanie plików wykonywalnych} 	
 \end{itemize}
 
+\newpage
 
 \section{Badania}
+\subsection{Badania poprawności zaimplementowanych algorytmów}
+\subsubsection{Selekcja progowa}
 
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{threshold_1.png}
+	\caption{Próg ustalony na 50 najlepszych kart.}
+	\label{fig1}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{threshold_2.png}
+	\caption{Próg ustalony na 10 najlepszych kart.}
+	\label{fig1}
+\end{figure}
+
+Powyższe wykresy pokazują różnice odchylenia standardowego w zależności od wybranego progu dla 100 kart. Są one zgodne z intuicją - dla większej wartości progu odchylenie standardowe wykazuje większe wahania. 
+
+\subsubsection{Selekcja proporcjonalna}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{roulette_1.png}
+	\caption{Prawdopodobieństwo krzyżowania równe 0.1.}
+	\label{fig1}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{roulette_2.png}
+	\caption{Prawdopodobieństwo krzyżowania równe 0.5.}
+	\label{fig1}
+\end{figure}
+
+Powyższe wykresy obrazują stopniowe zmniejszanie wartości średniej populacji. Przy małej wartości mutacji i krzyżowania proces ten dość szybko stabilizuje populacje(Rysunek 3). Natomiast dla dużego prawdopodobieństwa krzyżowania proces ten zachodzi wolniej z powodu krzyżowania lepszych osobników z gorszymi(Rysunek 4). 
+
+\newpage
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{roulette_3.png}
+	\caption{Wartość \textit{beta} równa 1.}
+	\label{fig1}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{roulette_4.png}
+	\caption{Wartość \textit{beta} równa 0.5.}
+	\label{fig1}
+\end{figure}
+
+Powyższe wykresy ukazują sposób wywierania presji przy selekcji proporcjonalnej przy obliczaniu wartości funkcji celu z użyciem wzoru  $exp(\frac{- \beta \cdot z_i}{z_{max}})$, gdzie $z_i$ odpowiada wartości celu $i$-tego osobnika. Im jest to większa wartość tym presja selekcji jest ostrzejsza - z tych powodów populacja z wykresu pierwszego ustabilizowała się szybciej i charakteryzuje się mniejszym wartością odchylenia standardowego.
+
+
+\newpage
+
+\subsubsection{Selekcja turniejowa}
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{tournament_1.png}
+	\caption{Wartość szranków równa 50\% ilości kart.}
+	\label{fig1}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{tournament_2.png}
+	\caption{Wartość szranków równa 10\% ilości kart.}
+	\label{fig1}
+\end{figure}
+
+Powyższe wykresy ukazują wpływ wielkości szranków na stabilizacje populacji. Przy dużej wielkości szranków często wybierane są osobniki z czołówki populacji, stąd przy małej wartości mutacji populacji silnie zbiega do wartości najlepszego osobnika. W przypadku mniejszej wielkości szranków(Rysunek 8.) proces ten nie jest tak jednostajny. 
+
+\newpage
+\subsubsection{Badanie krzyżowania k-punktowego}
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{k_1.png}
+	\caption{Przebieg dla krzyżowania z wyborem właściciela karty dla każdej osobno.}
+	\label{fig1}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{k_2.png}
+	\caption{Przebieg dla krzyżowania k-punktowego, k = 5.}
+	\label{fig1}
+\end{figure}
+
+Jak można wywnioskować z wykresów krzyżowanie k-punktowe nie wpływa tak znacząco na poszerzanie przestrzeni przeszukiwań algorytmu jak wybór właściciela dla każego osobnika z osoba i jest to zgodne z przewidywaniami. Testy były przeprowadzone dla osobnika reprezentowanego przez 100 kart. 
+
+\newpage
+\subsubsection{Rozmiar populacji}
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{pop_1.png}
+	\caption{Rozmiar populacji równy 100.}
+	\label{fig1}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering					\includegraphics[width=0.55\textwidth]{pop_2.png}
+	\caption{Rozmiar populacji równy 10000.}
+	\label{fig1}
+\end{figure}
+
+Przy badaniach została wykorzystana selekcja proporcjonalna z wartością \textit{beta} równą 1 i prawdopodobieństwem krzyżowania równym 0.3. Duża populacja nie może zostać zaburzona w tak prosty sposób i oscyluje ona niezmiennie wokół jednej wartości.   
+
+
+\subsection{Komentarz do wyników}
+Przedstawione wykresy pokazują działanie zaimplementowanych algorytmów. Populacja zachowuje się zgodnie z oczekiwaniami - wraz z iteracjami zmniejsza się wartość odchylenia standardowego i średniej. Nie zaprezentowano wykresów dotyczących zmiany wartości najmniejszego elementu, lecz wynika to głównie z ich nie reprezentatywności - wartość najmniejsza szybko znajduje minimum lokalne, nawet pomimo dużej wartości prawdopodobieństwa mutacji.
+
+\subsection{Dystrybuanty empiryczne}
 
 \end{document}

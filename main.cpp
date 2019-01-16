@@ -1,6 +1,7 @@
 // std
 #include <iostream>
 #include <getopt.h>
+#include <list>
 
 //ea
 #include "EvolutionaryAlgorithm.hpp"
@@ -12,6 +13,38 @@
 #include "CrossoverAlgorithm/KpointCrossover.h"
 #include "SelectionAlgorithm/ThresholdSelection.hpp"
 #include "SelectionAlgorithm/TournamentSelection.hpp"
+
+
+void findMin(ea::CardsValueVector& scoresVector, ea::ScoringFunction* sf){
+    std::vector<bool> ownersVector;
+
+    int min = INT32_MAX;
+
+    for(int i =0; i<scoresVector.size(); ++i) {
+        ownersVector.emplace_back(false);
+    }
+
+    min = std::min(min, sf->scoreCardsVector(ownersVector));
+
+    for(int i = 0; i<scoresVector.size(); ++i) {
+        ownersVector[i] = true;
+
+        std::vector<uint8_t > tmpV;
+        for(auto own :ownersVector){
+            tmpV.emplace_back(own);
+        }
+
+        do{
+            std::vector<bool> tmp2;
+            for(auto own: tmpV){
+                tmp2.emplace_back(own);
+            }
+            min = std::min(min, sf->scoreCardsVector(tmp2));
+        }while(std::next_permutation(tmpV.begin(), tmpV.end()));
+    }
+
+    std::cout<<min<<std::endl;
+}
 
 void csvDummyTest(){
     ea::CSVFileWriter csvFileWriter("dummy.csv", ';');
@@ -49,6 +82,7 @@ void initPopulation(unsigned cardsNum, unsigned populationSize, std::unique_ptr<
     for (signed i = 0; i < cardsNum; i++) {
         cardValues.emplace_back((rand()%10) + 1);
     }
+
     population.resize(populationSize);
     for (auto &&individual : population) {
         individual.reserve(cardsNum);
@@ -179,6 +213,8 @@ int main(int argc, char** argv) {
         crossover->setProbability(crossoverProbability);
 
         ea::CSVFileWriter csvFileWriter(fileName+".csv", ',');
+
+        findMin(*cardValues, scoringFunction.get());
 
         ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                             *mutation, *selection, *scoringFunction, csvFileWriter);

@@ -2,8 +2,8 @@
 #include "PolynomalScore.h"
 
 namespace ea {
-    PolynomalScore::PolynomalScore(unsigned int power, unsigned int firstGroupExpected,
-                                   unsigned int secondGroupExpected,
+    PolynomalScore::PolynomalScore(unsigned int power, int firstGroupExpected,
+                                   int secondGroupExpected,
                                    CardsValueVector& cardValues):
             ScoringFunction(firstGroupExpected, secondGroupExpected, cardValues),
             power_(power)

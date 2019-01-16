@@ -69,7 +69,7 @@ namespace ea{
         int minDiffValue_;
         double medianValue_;
         double averageValue_;
-        double standardDeviationValue_;
+        double standardDeviationValue_ = 0.0f;
 
         std::vector<int> scoresVectorCopy = scoresVector_;
 
@@ -84,7 +84,7 @@ namespace ea{
             medianValue_ = static_cast<double>(scoresVectorCopy[scoresVectorCopy.size()/2]);
         }
         else {
-            medianValue_ = static_cast<double>((scoresVectorCopy[scoresVectorCopy.size()/2] + scoresVectorCopy[scoresVectorCopy.size()/2 - 1])/2);
+            medianValue_ = static_cast<double>((scoresVectorCopy[std::floor(scoresVectorCopy.size()/2)] + scoresVectorCopy[std::floor(scoresVectorCopy.size()/2) + 1])/2.0f);
         }
 
         // counting average value
@@ -98,17 +98,6 @@ namespace ea{
         standardDeviationValue_ = standardDeviationValue_/ static_cast<double>(scoresVectorCopy.size());
         standardDeviationValue_ = std::sqrt(standardDeviationValue_);
 
-        /*
-            std::cout<<"Scores:"<<std::endl;
-            for(auto &score : scoresVectorCopy){
-                std::cout<<score<<std::endl;
-            }
-            std::cout<<"Min value: "<<minDiffValue_<<std::endl;
-            std::cout<<"Median: "<<medianValue_<<std::endl;
-            std::cout<<"Average: "<<averageValue_<<std::endl;
-            std::cout<<"Standard deviation "<<standardDeviationValue_<<std::endl;
-
-        */
 
         csvFileWriter_.writeEvalutionaryAlgorithmStats(minDiffValue_, medianValue_, averageValue_, standardDeviationValue_);
     }

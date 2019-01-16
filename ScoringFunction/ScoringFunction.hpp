@@ -8,12 +8,12 @@
 namespace ea {
     class ScoringFunction {
     protected:
-        unsigned int firstGroupExpected_;
-        unsigned int secondGroupExpected_;
+        int firstGroupExpected_;
+        int secondGroupExpected_;
         const CardsValueVector& cardValues_;
 
     public:
-        ScoringFunction(unsigned int firstGroupExpected, unsigned int secondGroupExpected,
+        ScoringFunction(int firstGroupExpected, int secondGroupExpected,
                                 CardsValueVector& cardValues);
         virtual int scoreCardsVector(const CardsOwnersVector& cardsOwnersVector) const = 0;
     };
