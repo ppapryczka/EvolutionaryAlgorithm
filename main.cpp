@@ -2,6 +2,7 @@
 #include <iostream>
 #include <getopt.h>
 #include <list>
+#include <map>
 
 //ea
 #include "EvolutionaryAlgorithm.hpp"
@@ -15,43 +16,63 @@
 #include "SelectionAlgorithm/TournamentSelection.hpp"
 
 
-void findMin(ea::CardsValueVector& scoresVector, ea::ScoringFunction* sf){
-    std::vector<bool> ownersVector;
+void countAllValues(ea::CardsValueVector& scoresVector, ea::ScoringFunction* sf, std::string logName){
+    int score;
+    ea::CSVFileWriter csvFileWriter(logName+"log"+".csv", ',');
 
-    int min = INT32_MAX;
+    std::string ownersString;
 
-    for(int i =0; i<scoresVector.size(); ++i) {
-        ownersVector.emplace_back(false);
+    for(int i=0; i<scoresVector.size(); ++i) {
+        ownersString+='b';
     }
 
-    min = std::min(min, sf->scoreCardsVector(ownersVector));
+    std::map<int, int> valuesMap;
+
+    std::vector<bool> ownersVector;
+    for(int i=0; i<ownersString.size(); ++i){
+        if(ownersString[i]=='b'){
+            ownersVector.emplace_back(false);
+        }
+        else{
+            ownersVector.emplace_back(true);
+        }
+    }
+
+    score = sf->scoreCardsVector(ownersVector);
+
+    valuesMap[score] = 1;
 
     for(int i = 0; i<scoresVector.size(); ++i) {
-        ownersVector[i] = true;
-
-        std::vector<uint8_t > tmpV;
-        for(auto own :ownersVector){
-            tmpV.emplace_back(own);
-        }
+        ownersString[i] = 'a';
+        std::string ownersCopy = ownersString;
 
         do{
-            std::vector<bool> tmp2;
-            for(auto own: tmpV){
-                tmp2.emplace_back(own);
+            std::vector<bool> ownersVector;
+            for(int i=0; i<ownersCopy.size(); ++i){
+                if(ownersCopy[i]=='b'){
+                    ownersVector.emplace_back(false);
+                }
+                else{
+                    ownersVector.emplace_back(true);
+                }
             }
-            min = std::min(min, sf->scoreCardsVector(tmp2));
-        }while(std::next_permutation(tmpV.begin(), tmpV.end()));
+
+            score = sf->scoreCardsVector(ownersVector);
+
+            auto found = valuesMap.find(score);
+            if(found!=valuesMap.end()){
+                found->second = found->second + 1;
+            }
+            else{
+                valuesMap[score] = 1;
+            }
+
+        }while(std::next_permutation(ownersCopy.begin(), ownersCopy.end()));
     }
 
-    std::cout<<min<<std::endl;
-}
-
-void csvDummyTest(){
-    ea::CSVFileWriter csvFileWriter("dummy.csv", ';');
-    std::string bluesBrothers1 = "We are on a mission from God!";
-    std::string bluesBrothers2 = "No ma'am. We're musicians.";
-    csvFileWriter.dummyStringWrite(bluesBrothers1);
-    csvFileWriter.dummyStringWrite(bluesBrothers2);
+    for(auto & score : valuesMap){
+        csvFileWriter.log(score.first, score.second);
+    }
 }
 
 void printUsage(char *name) {
@@ -214,7 +235,7 @@ int main(int argc, char** argv) {
 
         ea::CSVFileWriter csvFileWriter(fileName+".csv", ',');
 
-        findMin(*cardValues, scoringFunction.get());
+        countAllValues(*cardValues, scoringFunction.get(), fileName);
 
         ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                             *mutation, *selection, *scoringFunction, csvFileWriter);

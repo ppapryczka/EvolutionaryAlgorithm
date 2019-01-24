@@ -29,8 +29,8 @@ namespace ea{
             individual.reserve(population_[0].size()); // Every individual has the same size.
         }
 
-
         scorePopulation();
+        countAndLogStats();
 
         for (int i = 0; i < iterNum; ++i) {
 

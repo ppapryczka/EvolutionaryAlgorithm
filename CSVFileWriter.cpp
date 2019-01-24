@@ -27,6 +27,13 @@ namespace ea{
         writeNextLine();
     }
 
+    void CSVFileWriter::log(int x, int y) {
+        ofstreamFile_<<x;
+        ofstreamFile_<<separator_;
+        ofstreamFile_<<y;
+        writeNextLine();
+    }
+
     CSVFileWriter::~CSVFileWriter() {
         ofstreamFile_.close();
     }

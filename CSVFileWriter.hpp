@@ -19,6 +19,7 @@ namespace ea {
         void dummyStringWrite(const std::string& text);
         void writeEvalutionaryAlgorithmStats(int minDiffValue, double medianValue,
                 double averageValue, double standardDeviationValue);
+        void log(int x, int y);
         ~CSVFileWriter();
 
     };

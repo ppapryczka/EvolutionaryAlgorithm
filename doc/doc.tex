@@ -20,8 +20,8 @@ Temat: SK.ALHE.6 \\
 \bigskip
 
 \LARGE
-Patryk Pankiewicz, Maciej Turski \\
-07.01.2019 
+Patryk Pankiewicz, Michał Turski \\
+22.01.2019 
 \end{center}
 
 \newpage
@@ -139,17 +139,16 @@ Dodatkowo do zautomatyzowania testowania i generacji wykresów z danych wynikowy
 \newpage
 
 \section{Badania}
-\subsection{Badania poprawności zaimplementowanych algorytmów}
-\subsubsection{Selekcja progowa}
+\subsection{Selekcja progowa}
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{threshold_1.png}
 	\caption{Próg ustalony na 50 najlepszych kart.}
 	\label{fig1}
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{threshold_2.png}
 	\caption{Próg ustalony na 10 najlepszych kart.}
 	\label{fig1}
@@ -157,7 +156,9 @@ Dodatkowo do zautomatyzowania testowania i generacji wykresów z danych wynikowy
 
 Powyższe wykresy pokazują różnice odchylenia standardowego w zależności od wybranego progu dla 100 kart. Są one zgodne z intuicją - dla większej wartości progu odchylenie standardowe wykazuje większe wahania. 
 
-\subsubsection{Selekcja proporcjonalna}
+\newpage
+
+\subsection{Selekcja proporcjonalna}
 
 
 \begin{figure}[ht]
@@ -177,34 +178,34 @@ Powyższe wykresy obrazują stopniowe zmniejszanie wartości średniej populacji
 
 \newpage
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{roulette_3.png}
 	\caption{Wartość \textit{beta} równa 1.}
 	\label{fig1}
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{roulette_4.png}
 	\caption{Wartość \textit{beta} równa 0.5.}
 	\label{fig1}
 \end{figure}
 
-Powyższe wykresy ukazują sposób wywierania presji przy selekcji proporcjonalnej przy obliczaniu wartości funkcji celu z użyciem wzoru  $exp(\frac{- \beta \cdot z_i}{z_{max}})$, gdzie $z_i$ odpowiada wartości celu $i$-tego osobnika. Im jest to większa wartość tym presja selekcji jest ostrzejsza - z tych powodów populacja z wykresu pierwszego ustabilizowała się szybciej i charakteryzuje się mniejszym wartością odchylenia standardowego.
+Powyższe wykresy ukazują sposób wywierania presji przy selekcji proporcjonalnej przy obliczaniu wartości funkcji celu z użyciem wzoru  $exp(\frac{- \beta \cdot z_i}{z_{max}})$, gdzie $z_i$ odpowiada wartości celu $i$-tego osobnika. Im jest to większa wartość tym presja selekcji jest ostrzejsza - z tych powodów populacja z wykresu pierwszego ustabilizowała się szybciej i charakteryzuje się mniejszą wartością odchylenia standardowego.
 
 
 \newpage
 
-\subsubsection{Selekcja turniejowa}
+\subsection{Selekcja turniejowa}
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{tournament_1.png}
 	\caption{Wartość szranków równa 50\% ilości kart.}
 	\label{fig1}
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{tournament_2.png}
 	\caption{Wartość szranków równa 10\% ilości kart.}
 	\label{fig1}
@@ -213,15 +214,15 @@ Powyższe wykresy ukazują sposób wywierania presji przy selekcji proporcjonaln
 Powyższe wykresy ukazują wpływ wielkości szranków na stabilizacje populacji. Przy dużej wielkości szranków często wybierane są osobniki z czołówki populacji, stąd przy małej wartości mutacji populacji silnie zbiega do wartości najlepszego osobnika. W przypadku mniejszej wielkości szranków(Rysunek 8.) proces ten nie jest tak jednostajny. 
 
 \newpage
-\subsubsection{Badanie krzyżowania k-punktowego}
-\begin{figure}[ht]
+\subsection{Badanie krzyżowania k-punktowego}
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{k_1.png}
 	\caption{Przebieg dla krzyżowania z wyborem właściciela karty dla każdej osobno.}
 	\label{fig1}
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{k_2.png}
 	\caption{Przebieg dla krzyżowania k-punktowego, k = 5.}
 	\label{fig1}
@@ -230,15 +231,15 @@ Powyższe wykresy ukazują wpływ wielkości szranków na stabilizacje populacji
 Jak można wywnioskować z wykresów krzyżowanie k-punktowe nie wpływa tak znacząco na poszerzanie przestrzeni przeszukiwań algorytmu jak wybór właściciela dla każego osobnika z osoba i jest to zgodne z przewidywaniami. Testy były przeprowadzone dla osobnika reprezentowanego przez 100 kart. 
 
 \newpage
-\subsubsection{Rozmiar populacji}
-\begin{figure}[ht]
+\subsection{Rozmiar populacji}
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{pop_1.png}
 	\caption{Rozmiar populacji równy 100.}
 	\label{fig1}
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{pop_2.png}
 	\caption{Rozmiar populacji równy 10000.}
 	\label{fig1}
@@ -246,10 +247,34 @@ Jak można wywnioskować z wykresów krzyżowanie k-punktowe nie wpływa tak zna
 
 Przy badaniach została wykorzystana selekcja proporcjonalna z wartością \textit{beta} równą 1 i prawdopodobieństwem krzyżowania równym 0.3. Duża populacja nie może zostać zaburzona w tak prosty sposób i oscyluje ona niezmiennie wokół jednej wartości.   
 
-
 \subsection{Komentarz do wyników}
-Przedstawione wykresy pokazują działanie zaimplementowanych algorytmów. Populacja zachowuje się zgodnie z oczekiwaniami - wraz z iteracjami zmniejsza się wartość odchylenia standardowego i średniej. Nie zaprezentowano wykresów dotyczących zmiany wartości najmniejszego elementu, lecz wynika to głównie z ich nie reprezentatywności - wartość najmniejsza szybko znajduje minimum lokalne, nawet pomimo dużej wartości prawdopodobieństwa mutacji.
 
-\subsection{Dystrybuanty empiryczne}
+Przedstawione wykresy pokazują działanie zaimplementowanych algorytmów. Populacja zachowuje się zgodnie z oczekiwaniami - wraz z iteracjami zmniejsza się wartość odchylenia standardowego i średniej. Problemem okazała się za to przestrzeń przy zbliżonych wartościach oczekiwanych dla obu stosów  i nie zaprezentowano wykresów dotyczących zmiany wartości najmniejszego elementu dla tego przypadku, lecz wynika to głównie z ich nie reprezentatywności - algorytm szybko znajduje minimum lokalne, nawet pomimo małego wartości prawdopodobieństwa mutacji.
 
+Uzyskano diagnozę takiego stanu rzeczy. Mianowicie jest nią przestrzeń i wybór funkcji oceniającej. Funkcja oceniająca, która w intuicyjny sposób reprezentuje jak daleko rozwiązanie znajduje się od idealnego jest różnica wartości kart na stosie i wartości oczekiwanej. Wybór takiej funkcji dla problemu tego projektu wydaje się adekwatny. 
+
+Z powodu nie oczekiwanego braku/nieznacznej zmiany wartości najmniejszego elementu nie zależnie od ilości iteracji i wybranych algorytmów zdecydowano o potrzebie lepszego zbadania przeszukiwanej przestrzeni. Zrealizowano to poprzez przejście po całej przestrzeni i zapisaniu poszczególnych uzyskanych wyników i jak często one występowały. Dla małych problemów(do 20 kart problem taki jest rozwiązywany w wystarczająco krótkim czasie). Uzyskane wyniki zaprezentowano na poniższych wykresach:
+
+\begin{figure}[h]
+	\centering					\includegraphics[width=0.55\textwidth]{1Values.png}
+	\caption{Ilość kart równa 15, wartość na pierwszym stosie 25, a na drugim 30. Wartości kart: 8, 3, 4, 4, 10, 1, 8, 4, 2, 6, 9, 10, 1, 4, 4.}
+	\label{fig1}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+	\centering					\includegraphics[width=0.55\textwidth]{2Values.png}
+	\caption{Ilość kart równa 20, wartość na pierwszym stosie 25, a na drugim 30. Wartości kart: 4, 4, 10, 9, 8, 8, 9, 4, 4, 5, 8, 7, 5, 5, 4, 3, 6, 6, 2, 8.}
+	\label{fig1}
+\end{figure}
+
+
+Jak widać wraz ze zmniejszaniem się wartości funkcji celu zwiększa się ilość wystąpień danej oceny. Co ciekawe w przypadku ukazanym na rysunku nr. 13 możliwych do uzyskania było tylko 42 różnych wartości funkcji celu, a w przypadku drugim 62. Są to liczby niespodziewanie małe, lecz wynikają one z wartości kart i sposobu oceny.  
+
+Jak można zauważyć rozwiązanie optymalne lub bliskie optymalnego stanowią lwią część wszystkich wartości i stanowią w zależności od przyjęcia górnej granicy nawet do 30\% wszystkich możliwości, stąd dla populacji o liczności równej np. 10 nie sposób by nie została wylosowana jedna z takich wartości.  
+ 
+\section{Podsumowanie}
+Do rozwiązanie problemu został zaimplementowany poprawny algorytm ewolucyjny z wieloma możliwościami parametryzacji. Przy wybranej funkcji celu i zadanej przestrzeni nie można poprawnie zobrazować działania algorytmu przy znajdowaniu najmniejszej wartości. Sytuacja mogłaby ulec zmianie w przypadku dodania dodatkowych celów do spełnienia np. podobnej ilości kart lub jak najmniejszego odchylenia standardowego ich wartości.  
+ 
 \end{document}

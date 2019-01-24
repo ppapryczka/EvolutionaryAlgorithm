@@ -1,4 +1,4 @@
-from make_charts import make_charts, make_ECDF, read_data
+from make_charts import make_charts, make_ECDF, read_data, make_value_graph
 import subprocess
 import numpy
 import sys
@@ -77,8 +77,8 @@ if __name__ == "__main__":
 
     list_name = []
 
-    for x in range(500):
-        list_name.append(executable_name + " -1 220 -2 220 -t 10 -m 0.05 -v 2 -u -c 80 -s " + str(x) + " -a 100 -b 0.4 -i 100 -f test" + str(x))
+    for x in range(50):
+        list_name.append(executable_name + " -1 90 -2 0 -t 10 -m 0.05 -v 2 -u -c 10 -s " + str(x) + " -a 5 -b 0.4 -i 100 -f test" + str(x))
         #list_name.append(executable_name + " -1 2 -2 3 -r 1  -m 0.05 -v 2 -u -c 100 -s" + str(x) + " -a 10 -b 0.3 -i 100 -f test" + str(x))
         #list_name.append(executable_name + " -1 2 -2 3 -h 20  -m 0.05 -v 2 -u -c 100 -s" + str(x) + " -a 10 -b 0.3 -i 100 -f test" + str(x))
 
@@ -92,9 +92,12 @@ if __name__ == "__main__":
     #]
 
     output_file_names = run(list_name)
+    splited = output_file_names[0].split(".csv")
+    output_file_name = splited[0]+"log.csv";
+    make_value_graph(output_file_name)
 
-    #list = count_Y_min_max(output_file_names)
+    list = count_Y_min_max(output_file_names)
 
-    #make_all_charts(output_file_names, list)
+    make_all_charts(output_file_names, list)
 
-    make_ECDF(output_file_names)
+    #make_ECDF(output_file_names)

@@ -8,6 +8,23 @@ def read_data(fileName):
     return data
 
 
+def make_value_graph(filename):
+    data = read_data(filename)
+
+    plt.xlabel("Wartość funkcji oceny")
+    plt.ylabel("Ilość wystąpień")
+    plt.plot(data[0], data[1], "ro")
+    plt.title('Wartości')
+    plt.grid(True)
+    fig = plt.gcf()
+    plt.tight_layout()
+    plt.show()
+    axes = plt.gca()
+    fig.savefig(filename.split(".csv")[0]+"Values.png", dpi=300)
+    #plt.close(fig)
+
+
+
 def make_ECDF(fileName_List):
     minValues = np.arange(len(fileName_List))
 
@@ -33,8 +50,6 @@ def make_charts(fileName, list):
     print(data[0])
 
     x_axis = range(0, data[0].size)
-
-
 
     plt.xlabel("Iteracja")
     plt.ylabel("Wartość")
