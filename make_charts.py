@@ -3,54 +3,45 @@ import numpy as np
 import matplotlib.pylab as plt
 
 
-def read_data(fileName):
-    data = pd.read_csv(fileName, delimiter=",", header = None)
+def read_data(file_name):
+    """
+    It reads data using pandas library.
+
+    Args:
+        :arg1 name of csv file
+
+    Returns:
+        DataFrame which contains read data.
+    """
+
+    data = pd.read_csv(file_name, delimiter=",", header = None)
     return data
 
 
-def make_value_graph(filename):
-    data = read_data(filename)
-
-    plt.xlabel("Wartość funkcji oceny")
-    plt.ylabel("Ilość wystąpień")
-    plt.plot(data[0], data[1], "ro")
-    plt.title('Wartości')
-    plt.grid(True)
-    fig = plt.gcf()
-    plt.tight_layout()
-    plt.show()
-    axes = plt.gca()
-    fig.savefig(filename.split(".csv")[0]+"Values.png", dpi=300)
-    #plt.close(fig)
 
 
+def make_charts(file_name, limits):
+    """
+    It makes following charts:
+        - min value
+        - median
+        - average
+        - standard deviation
 
-def make_ECDF(fileName_List):
-    minValues = np.arange(len(fileName_List))
+    Args:
+        :arg1 name of csv file
+        :arg2 limits for axis, it can be None
 
-    for x in range(len(fileName_List)):
-        data = read_data(fileName_List[x])
-        minElement = data[0].min()
-        minValues[x] = minElement
+    Returns:
+        DataFrame which contains read data.
+    """
 
-    x = np.sort(minValues)
-    y = np.arange(1, len(minValues) + 1) / len(minValues)
 
- #   plt.plot(x, y, marker='.', linestyle='none')
-    plt.plot(x, y, marker='.')
-    plt.title('ECDF')
-    plt.grid(True)
-    fig = plt.gcf()
-    plt.tight_layout()
-    fig.savefig("QualityECDF.png", dpi=300)
-    plt.close(fig)
-
-def make_charts(fileName, list):
-    data = read_data(fileName)
-    print(data[0])
-
+    data = read_data(file_name)
     x_axis = range(0, data[0].size)
 
+
+    # min value
     plt.xlabel("Iteracja")
     plt.ylabel("Wartość")
 
@@ -60,12 +51,15 @@ def make_charts(fileName, list):
     fig = plt.gcf()
     plt.tight_layout()
 
-    axes = plt.gca()
-    axes.set_ylim(list[0], list[1])
+    if limits is not None:
+        axes = plt.gca()
+        axes.set_ylim(limits[0], limits[1])
 
-    fig.savefig(fileName.split(".csv")[0]+"MinValue.png", dpi=300)
+    fig.savefig(file_name.split(".csv")[0]+"MinValue.png", dpi=300)
     plt.close(fig)
 
+
+    # median
     plt.xlabel("Iteracja")
     plt.ylabel("Wartość")
 
@@ -75,12 +69,15 @@ def make_charts(fileName, list):
     fig = plt.gcf()
     plt.tight_layout()
 
-    axes = plt.gca()
-    axes.set_ylim(list[2], list[3])
+    if limits is not None:
+        axes = plt.gca()
+        axes.set_ylim(limits[2], limits[3])
 
-    fig.savefig(fileName.split(".csv")[0] + "Median.png", dpi=300)
+    fig.savefig(file_name.split(".csv")[0] + "Median.png", dpi=300)
     plt.close(fig)
 
+
+    # average
     plt.xlabel("Iteracja")
     plt.ylabel("Wartość")
 
@@ -90,12 +87,15 @@ def make_charts(fileName, list):
     fig = plt.gcf()
     plt.tight_layout()
 
-    axes = plt.gca()
-    axes.set_ylim(list[4], list[5])
+    if limits is not None:
+        axes = plt.gca()
+        axes.set_ylim(limits[4], limits[5])
 
-    fig.savefig(fileName.split(".csv")[0] + "Average.png", dpi=300)
+    fig.savefig(file_name.split(".csv")[0] + "Average.png", dpi=300)
     plt.close(fig)
 
+
+    # standard deviation
     plt.xlabel("Iteracja")
     plt.ylabel("Wartość")
 
@@ -105,23 +105,9 @@ def make_charts(fileName, list):
     fig = plt.gcf()
     plt.tight_layout()
 
-    axes = plt.gca()
-    axes.set_ylim(list[6], list[7])
+    if limits is not None:
+        axes = plt.gca()
+        axes.set_ylim(limits[6], limits[7])
 
-    fig.savefig(fileName.split(".csv")[0] + "StandardDeviation.png", dpi=300)
+    fig.savefig(file_name.split(".csv")[0] + "StandardDeviation.png", dpi=300)
     plt.close(fig)
-
-    x = np.sort(data[0])
-    y = np.arange(1, len(x) + 1) / len(x)
-
-    plt.xlabel("Iteracja")
-    plt.ylabel("Wartość")
-
-    plt.plot(x, y, marker='.', linestyle='none')
-    plt.title('Dystrybuanta empiryczna')
-    plt.grid(True)
-    fig = plt.gcf()
-    plt.tight_layout()
-    fig.savefig(fileName.split(".csv")[0] + "ECDF.png", dpi=300)
-    plt.close(fig)
-

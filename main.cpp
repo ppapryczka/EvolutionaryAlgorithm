@@ -16,65 +16,6 @@
 #include "SelectionAlgorithm/TournamentSelection.hpp"
 
 
-void countAllValues(ea::CardsValueVector& scoresVector, ea::ScoringFunction* sf, std::string logName){
-    int score;
-    ea::CSVFileWriter csvFileWriter(logName+"log"+".csv", ',');
-
-    std::string ownersString;
-
-    for(int i=0; i<scoresVector.size(); ++i) {
-        ownersString+='b';
-    }
-
-    std::map<int, int> valuesMap;
-
-    std::vector<bool> ownersVector;
-    for(int i=0; i<ownersString.size(); ++i){
-        if(ownersString[i]=='b'){
-            ownersVector.emplace_back(false);
-        }
-        else{
-            ownersVector.emplace_back(true);
-        }
-    }
-
-    score = sf->scoreCardsVector(ownersVector);
-
-    valuesMap[score] = 1;
-
-    for(int i = 0; i<scoresVector.size(); ++i) {
-        ownersString[i] = 'a';
-        std::string ownersCopy = ownersString;
-
-        do{
-            std::vector<bool> ownersVector;
-            for(int i=0; i<ownersCopy.size(); ++i){
-                if(ownersCopy[i]=='b'){
-                    ownersVector.emplace_back(false);
-                }
-                else{
-                    ownersVector.emplace_back(true);
-                }
-            }
-
-            score = sf->scoreCardsVector(ownersVector);
-
-            auto found = valuesMap.find(score);
-            if(found!=valuesMap.end()){
-                found->second = found->second + 1;
-            }
-            else{
-                valuesMap[score] = 1;
-            }
-
-        }while(std::next_permutation(ownersCopy.begin(), ownersCopy.end()));
-    }
-
-    for(auto & score : valuesMap){
-        csvFileWriter.log(score.first, score.second);
-    }
-}
-
 void printUsage(char *name) {
     std::cerr << "Usage: " << name << " -1 expected -2 expected {-r param | -t param | -h param}\n";
     std::cerr << "\t-m param -v power {-u | -k param} -s seed -c cards -a number -b probability -i iterations\n";
@@ -235,8 +176,6 @@ int main(int argc, char** argv) {
         crossover->setProbability(crossoverProbability);
 
         ea::CSVFileWriter csvFileWriter(fileName+".csv", ',');
-
-        countAllValues(*cardValues, scoringFunction.get(), fileName);
 
         ea::EvolutionaryAlgorithm algorithm(*population, *cardValues, *crossover,
                                             *mutation, *selection, *scoringFunction, csvFileWriter);
