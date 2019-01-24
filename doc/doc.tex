@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{subfig}
 \usepackage{graphicx}
+\usepackage{float}
 
 \makeatletter
 \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
@@ -249,11 +250,18 @@ Przy badaniach została wykorzystana selekcja proporcjonalna z wartością \text
 
 \subsection{Komentarz do wyników}
 
-Przedstawione wykresy pokazują działanie zaimplementowanych algorytmów. Populacja zachowuje się zgodnie z oczekiwaniami - wraz z iteracjami zmniejsza się wartość odchylenia standardowego i średniej. Problemem okazała się za to przestrzeń przy zbliżonych wartościach oczekiwanych dla obu stosów  i nie zaprezentowano wykresów dotyczących zmiany wartości najmniejszego elementu dla tego przypadku, lecz wynika to głównie z ich nie reprezentatywności - algorytm szybko znajduje minimum lokalne, nawet pomimo małego wartości prawdopodobieństwa mutacji.
+Przedstawione wykresy pokazują działanie zaimplementowanych algorytmów. Populacja zachowuje się zgodnie z oczekiwaniami - wraz z iteracjami zmniejsza się wartość odchylenia standardowego i średniej. Problemem okazała się za to przestrzeń przy zbliżonych wartościach oczekiwanych dla obu stosów.
 
-Uzyskano diagnozę takiego stanu rzeczy. Mianowicie jest nią przestrzeń i wybór funkcji oceniającej. Funkcja oceniająca, która w intuicyjny sposób reprezentuje jak daleko rozwiązanie znajduje się od idealnego jest różnica wartości kart na stosie i wartości oczekiwanej. Wybór takiej funkcji dla problemu tego projektu wydaje się adekwatny. 
+Niepokojące były wykresy przedstawiające wartość fukncji celu najepszego elementu populacji. Wyglądały one następująco:
+\begin{figure}[H]
+	\centering					\includegraphics[width=0.55\textwidth]{two_group.png}
+	\caption{Minimlna wartość funkcji celu w zależności od numeru iteracji.}
+	\label{fig1}
+\end{figure}
 
-Z powodu nie oczekiwanego braku/nieznacznej zmiany wartości najmniejszego elementu nie zależnie od ilości iteracji i wybranych algorytmów zdecydowano o potrzebie lepszego zbadania przeszukiwanej przestrzeni. Zrealizowano to poprzez przejście po całej przestrzeni i zapisaniu poszczególnych uzyskanych wyników i jak często one występowały. Dla małych problemów(do 20 kart problem taki jest rozwiązywany w wystarczająco krótkim czasie). Uzyskane wyniki zaprezentowano na poniższych wykresach:
+Na wykresie tym widać, że najlepsza znaleziona wartość funkcji celu znajdowała się już w populacji początkowej. Tylko nieliczne populacje nie zawierały elementu optymalnego. Jednocześnie, jak pokazują inne statystyki, takie jak średnia wartość funkcji celu czy odchylenie standardowe, populacja w tym czasie zmieniała się znacznie. Wzbudziło to tak duże wątpliwości, że zdecydowano się na dokładniejsze zbadanie przeszukiwanej przestrzeni.
+
+Badania przestrzeni realizowano poprzez przejście po całej przestrzeni i zapisanie poszczególnych uzyskanych wyników i tego, jak często one występowały. Dla małych problemów(do 20 kart) problem taki jest rozwiązywany w wystarczająco krótkim czasie. Uzyskane wyniki zaprezentowano na poniższych wykresach:
 
 \begin{figure}[h]
 	\centering					\includegraphics[width=0.55\textwidth]{1Values.png}
@@ -269,11 +277,25 @@ Z powodu nie oczekiwanego braku/nieznacznej zmiany wartości najmniejszego eleme
 	\label{fig1}
 \end{figure}
 
+Jak widać, wraz ze zmniejszaniem się wartości funkcji celu zwiększa się liczba wystąpień danej oceny. Co ciekawe w przypadku ukazanym na rysunku nr. 13 możliwych do uzyskania było tylko 42 różnych wartości funkcji celu, a w przypadku drugim 62. Są to liczby niespodziewanie małe, lecz wynikają one z wartości kart i sposobu oceny.  
 
-Jak widać wraz ze zmniejszaniem się wartości funkcji celu zwiększa się ilość wystąpień danej oceny. Co ciekawe w przypadku ukazanym na rysunku nr. 13 możliwych do uzyskania było tylko 42 różnych wartości funkcji celu, a w przypadku drugim 62. Są to liczby niespodziewanie małe, lecz wynikają one z wartości kart i sposobu oceny.  
+Jak można zauważyć, rozwiązanie optymalne lub bliskie optymalnego stanowią lwią część wszystkich wartości i stanowią w zależności od przyjęcia górnej granicy nawet do 30\% wszystkich możliwości, stąd dla populacji o liczności równej np. 10 nie sposób by nie została wylosowana jedna z takich wartości.
 
-Jak można zauważyć rozwiązanie optymalne lub bliskie optymalnego stanowią lwią część wszystkich wartości i stanowią w zależności od przyjęcia górnej granicy nawet do 30\% wszystkich możliwości, stąd dla populacji o liczności równej np. 10 nie sposób by nie została wylosowana jedna z takich wartości.  
- 
+Zupełnie inaczej przedstawia się przestrzeń przy zadaniu, w którym wartości kart na stosach są zupełnie różne. Aby to pokazać, przeanalizowano przestrzeń dwudzestokartową w której na pierwszym stosie oczekujemy wartości 110, na drugim zaś 0. Wyniki zaprezentowano na poniższym histogramie:
+\begin{figure}[H]
+	\centering					\includegraphics[width=0.55\textwidth]{3Values.png}
+	\caption{Ilość kart równa 20, wartość na pierwszym stosie 110, a na drugim 0. Wartości kart losowe.}
+	\label{fig1}
+\end{figure}
+
+W tej "trudnej" przestrzeni wykresy przedstawiające zbieganie się wartości minimalnej w iteracji przedstawiają się ciekawiej:
+\begin{figure}[H]
+	\centering					\includegraphics[width=0.55\textwidth]{one_group.png}
+	\caption{Minimlna wartość funkcji celu w zależności od numeru iteracji, problem "trudny".}
+	\label{fig1}
+\end{figure}
+W tym przypadku widać, że początkowa populacja nie zawiera dobrych rozwiązań. Dopiero po około 40 iteracjach udaje się znaleźć rozwiązanie bliskie optymalnemu. Dzieje się tak dlatego, że dobrych rozwiązań jest w tej przestrzeni znacznie mniej, niż w przestrzeni "łatwej", a co za tym idzie "trafienie" do optimum przy pomocy krzyżowania i mutacji jest znacznie mniej prawdopodobne.
+
 \section{Podsumowanie}
 Do rozwiązanie problemu został zaimplementowany poprawny algorytm ewolucyjny z wieloma możliwościami parametryzacji. Przy wybranej funkcji celu i zadanej przestrzeni nie można poprawnie zobrazować działania algorytmu przy znajdowaniu najmniejszej wartości. Sytuacja mogłaby ulec zmianie w przypadku dodania dodatkowych celów do spełnienia np. podobnej ilości kart lub jak najmniejszego odchylenia standardowego ich wartości.  
  
