@@ -101,7 +101,7 @@ void initPopulation(unsigned cardsNum, unsigned populationSize, std::unique_ptr<
         throw std::runtime_error("Too small population or number of cards");
     cardValues.reserve(cardsNum);
     for (signed i = 0; i < cardsNum; i++) {
-        cardValues.emplace_back((rand()%10) + 1);
+        cardValues.emplace_back((rand()%1000) + 1);
     }
 
     population.resize(populationSize);
@@ -130,6 +130,7 @@ int main(int argc, char** argv) {
 
         seed = (unsigned) time(nullptr);
         expected1 = expected2 = cardsNum = populationSize = iterations = 0;
+
 
         while ((opt = getopt(argc, argv, "1:2:r:t:h:m:v:uk:s:c:a:b:i:f:")) != -1) {
             switch (opt) {
